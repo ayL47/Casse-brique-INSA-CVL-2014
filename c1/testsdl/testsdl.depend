@@ -201,51 +201,70 @@
 	<stdlib.h>
 	<SDL/SDL.h>
 
-1399573340 D
-
-1399575636 source:d:\github\casse-brique-insa-cvl-2014\c1\testsdl\jeu.c
+<<<<<<< HEAD
+1399575145 source:d:\github\casse-brique-insa-cvl-2014\c1\testsdl\jeu.c
 	<stdlib.h>
 	<stdio.h>
 	<SDL/SDL.h>
 	"jeu.h"
 	"level.h"
 	"constantes.h"
+
+1399574684 d:\github\casse-brique-insa-cvl-2014\c1\testsdl\level.c
+	<stdlib.h>
+	<stdio.h>
+	<SDL/SDL.h>
+	"level.h"
+	"constantes.h"
+
+1399574958 d:\github\casse-brique-insa-cvl-2014\c1\testsdl\constantes.h
+	<SDL/SDL.h>
+
+1399574709 d:\github\casse-brique-insa-cvl-2014\c1\testsdl\jeu.h
+
+1399575150 source:d:\github\casse-brique-insa-cvl-2014\c1\testsdl\level.c
+	<stdlib.h>
+	<stdio.h>
+	<SDL/SDL.h>
+	"level.h"
+	"constantes.h"
+
+1399574767 source:d:\github\casse-brique-insa-cvl-2014\c1\testsdl\main.cpp
+=======
+1399573777 source:d:\github\casse-brique-insa-cvl-2014\c1\testsdl\jeu.c
+	<stdlib.h>
+	<stdio.h>
+	<SDL/SDL.h>
+	"level.c"
+	"constantes.h"
+	"jeu.h"
 
 1399573751 d:\github\casse-brique-insa-cvl-2014\c1\testsdl\level.c
 	<stdlib.h>
 	<stdio.h>
 	<SDL/SDL.h>
-	"level.h"
 	"constantes.h"
+
+1399573340 d:\github\casse-brique-insa-cvl-2014\c1\testsdl\constantes.h
+	<SDL/SDL.h>
+
+1399571248 d:\github\casse-brique-insa-cvl-2014\c1\testsdl\jeu.h
+
+1399573751 source:d:\github\casse-brique-insa-cvl-2014\c1\testsdl\level.c
 	<stdlib.h>
 	<stdio.h>
 	<SDL/SDL.h>
 	"constantes.h"
 
-1399575636 d:\github\casse-brique-insa-cvl-2014\c1\testsdl\constantes.h
-	<SDL/SDL.h>
-
-1399575636 d:\github\casse-brique-insa-cvl-2014\c1\testsdl\jeu.h
-
-1399575636 source:d:\github\casse-brique-insa-cvl-2014\c1\testsdl\level.c
-	<stdlib.h>
-	<stdio.h>
-	<SDL/SDL.h>
-	"level.h"
-	"constantes.h"
-
-1399575936 source:d:\github\casse-brique-insa-cvl-2014\c1\testsdl\main.cpp
+1399573340 source:d:\github\casse-brique-insa-cvl-2014\c1\testsdl\main.cpp
+>>>>>>> a13a1b2139f3efcc6f00b4a453a8b5f34b756b2a
 	<stdlib.h>
 	<SDL/SDL.h>
 	"jeu.h"
 
-1399575191 a1b2139f3efcc6f00b4a453a8b5f34b756b2a
-	<stdlib.h>
-	<SDL/SDL.h>
-	"jeu.h"
-
-1399575636 d:\github\casse-brique-insa-cvl-2014\c1\testsdl\level.h
+<<<<<<< HEAD
+1399575191 d:\github\casse-brique-insa-cvl-2014\c1\testsdl\level.h
 	"constantes.h"
 
-1399575191 s.h"
-
+=======
+>>>>>>> a13a1b2139f3efcc6f00b4a453a8b5f34b756b2a
