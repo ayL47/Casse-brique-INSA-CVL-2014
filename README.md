@@ -1,4 +1,4 @@
-Casse-brique-INSA-CVL-2014
+﻿Casse-brique-INSA-CVL-2014
 ==========================
 
 Casse brique pour projet algo 2A INSA-CVL
@@ -8,3 +8,4 @@ Casse brique pour projet algo 2A INSA-CVL
 * Gestion du déplacement de la barre
 * Gestion de la balle
 * Gestion des collisions
+* Avoir 20/20
