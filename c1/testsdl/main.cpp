@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
-#define OUI 1
-#define NON 0
+
 #include "jeu.h"
 
 int main(int argc, char *argv[])

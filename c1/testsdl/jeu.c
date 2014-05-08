@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 
-#include "level.c"
-#include "constantes.h"
 #include "jeu.h"
+#include "level.h"
+#include "constantes.h"
 
 void jouer()
 {
