@@ -2,18 +2,19 @@
 #include <SDL/SDL.h>
 #define OUI 1
 #define NON 0
-
-
-#define LARGEUR_TILE 24  // hauteur et largeur des tiles.
-#define HAUTEUR_TILE 16
-
-#define NOMBRE_BLOCS_LARGEUR 10  // nombre a afficher en x et y
-#define NOMBRE_BLOCS_HAUTEUR 5
-
-
-
+#include "jeu.h"
 
 int main(int argc, char *argv[])
+{
+    SDL_Event event;
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_WM_SetCaption(":: Casse brique ::",NULL);
+}
+
+
+
+
+/*int main(int argc, char *argv[])
 {
     SDL_Surface *ecran, *raquette;
     SDL_Rect positionR;
@@ -28,11 +29,7 @@ int main(int argc, char *argv[])
     positionR.x=350;
     positionR.y=500;
     SDL_EnableKeyRepeat(5,5);
-    /*Afficher(ecran,brique,table,NOMBRE_BLOCS_LARGEUR,NOMBRE_BLOCS_HAUTEUR);*/
-
-
-
-
+    /*Afficher(ecran,brique,table,NOMBRE_BLOCS_LARGEUR,NOMBRE_BLOCS_HAUTEUR);
     while(continuer==OUI)
     {
         SDL_PollEvent(&event);
@@ -63,4 +60,4 @@ int main(int argc, char *argv[])
     }
     SDL_FreeSurface(raquette);
     return 0;
-}
+}*/
