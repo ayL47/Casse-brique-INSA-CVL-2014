@@ -8,6 +8,7 @@ int main(int argc, char *argv[])
     SDL_Event event;
     SDL_Init(SDL_INIT_VIDEO);
     SDL_WM_SetCaption(":: Casse brique ::",NULL);
+    printf("test");
 }
 
 
