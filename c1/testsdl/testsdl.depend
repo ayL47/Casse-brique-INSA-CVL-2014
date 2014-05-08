@@ -201,3 +201,33 @@
 	<stdlib.h>
 	<SDL/SDL.h>
 
+1399573777 source:d:\github\casse-brique-insa-cvl-2014\c1\testsdl\jeu.c
+	<stdlib.h>
+	<stdio.h>
+	<SDL/SDL.h>
+	"level.c"
+	"constantes.h"
+	"jeu.h"
+
+1399573751 d:\github\casse-brique-insa-cvl-2014\c1\testsdl\level.c
+	<stdlib.h>
+	<stdio.h>
+	<SDL/SDL.h>
+	"constantes.h"
+
+1399573340 d:\github\casse-brique-insa-cvl-2014\c1\testsdl\constantes.h
+	<SDL/SDL.h>
+
+1399571248 d:\github\casse-brique-insa-cvl-2014\c1\testsdl\jeu.h
+
+1399573751 source:d:\github\casse-brique-insa-cvl-2014\c1\testsdl\level.c
+	<stdlib.h>
+	<stdio.h>
+	<SDL/SDL.h>
+	"constantes.h"
+
+1399573340 source:d:\github\casse-brique-insa-cvl-2014\c1\testsdl\main.cpp
+	<stdlib.h>
+	<SDL/SDL.h>
+	"jeu.h"
+
