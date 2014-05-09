@@ -10,14 +10,19 @@ int main(int argc, char *argv[])
     SDL_Init(SDL_INIT_VIDEO);
     SDL_SetVideoMode(LARGEUR_FENETRE, HAUTEUR_FENETRE, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
     SDL_WM_SetCaption(":: Casse brique ::", NULL);
+    /*menu();*/
     play();
-    system("pause");
-
+    close();
 
     return 0;
 }
 
+void close(void)
+{
 
+    SDL_Quit(); /* Fermeture SDL */
+
+}
 
 
 /*int main(int argc, char *argv[])

@@ -4,6 +4,7 @@
 #include "level.h"
 #include "jeu.h"
 #include "constantes.h"
+#include "move.h"
 
 void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_Surface *mur, SDL_Surface *vide,int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR])
 {
@@ -12,6 +13,8 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
 
     int continuer = 1, briquesRestantes = 0, i = 0, j = 0, jeu = 0;
 
+while (continuer)                                      /* Boucle de jeu */
+    {
     positionBarre.x = 8;
     positionBarre.y = 19;
     positionBalle.x = 9;
@@ -56,7 +59,7 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
     SDL_BlitSurface(balle, NULL, SDL_GetVideoSurface(), &position);
     SDL_Flip(SDL_GetVideoSurface());
 
-    if (jeu == 0)          /* Afin de laisser le joueur commencer : tant qu'il n'appuie pas sur espace, le jeu reste freeze en position de départ.*/
+    if (jeu == 0)          /*Afin de laisser le joueur commencer : tant qu'il n'appuie pas sur espace, le jeu reste freeze en position de départ.*/
         {
             SDL_Flip(SDL_GetVideoSurface());
             SDL_WaitEvent(&event);
@@ -79,8 +82,33 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
                     }
             }
         }
-}
+        SDL_PollEvent(&event);
+                switch(event.type)
+                {
+                    case SDL_QUIT:
+                        continuer = 0;
+                        break;
+                    case SDL_KEYDOWN:
+                        switch(event.key.keysym.sym)
+                        {
+                            case SDLK_ESCAPE:
+                                continuer = 0;
+                                break;
+                            case SDLK_RIGHT:
+                                moveBarre(&positionBarre, DROITE);
+                                break;
+                            case SDLK_LEFT:
+                                moveBarre(&positionBarre, GAUCHE);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                }
 
+
+    }
+}
 
 void play()
 {
