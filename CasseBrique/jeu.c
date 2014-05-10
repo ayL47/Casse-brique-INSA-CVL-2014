@@ -11,16 +11,26 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
     SDL_Rect position, positionBalle, positionBarre;
     SDL_Event event;
 
-    int continuer = 1, briquesRestantes = 0, i = 0, j = 0, jeu = 0;
+    int continuer = 1, briquesRestantes = 0, i = 0, j = 0, jeu = 0, levelLoad = 0;
+    int deplacementBalleVertical = 0;
+    int deplacementBalleHorizontal = 0;
 
     /* Boucle de jeu */
     while (continuer)
         {
-        positionBarre.x = 8;
-        positionBarre.y = 19;
-        positionBalle.x = 9;
-        positionBalle.y = 18;
+            if(levelLoad == 0)
+            {
+                positionBarre.x = 215;
+                positionBarre.y = 500;
+                positionBalle.x = 235;
+                positionBalle.y = 475;
+                levelLoad = 1;
+                deplacementBalleVertical = -1;
+            }
+
         SDL_FillRect(SDL_GetVideoSurface(), NULL, SDL_MapRGB(SDL_GetVideoSurface()->format, 0, 0, 0));
+
+        /*Rempli la carte*/
         for (i = 0 ; i < NB_BLOCS_HAUTEUR ; i++)
         {
             for (j = 0 ; j < NB_BLOCS_LARGEUR ; j++)
@@ -49,63 +59,82 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
                 }
             }
         }
+        /*Transparence de la balle*/
         SDL_SetColorKey(balle, SDL_SRCCOLORKEY, SDL_MapRGB(balle->format, 255, 255, 255));
 
+        /*Blittage de la barre et de la balle*/
+        SDL_BlitSurface(barre, NULL, SDL_GetVideoSurface(), &positionBarre);
+        SDL_BlitSurface(balle, NULL, SDL_GetVideoSurface(), &positionBalle);
 
-        position.x = positionBarre.x * TAILLE_BLOC;
-        position.y = positionBarre.y * TAILLE_BLOC;
-        SDL_BlitSurface(barre, NULL, SDL_GetVideoSurface(), &position);
-        position.x = positionBalle.x * TAILLE_BLOC;
-        position.y = positionBalle.y * TAILLE_BLOC;
-        SDL_BlitSurface(balle, NULL, SDL_GetVideoSurface(), &position);
+        /*Mise a Jour de l'écran*/
         SDL_Flip(SDL_GetVideoSurface());
 
-        if (jeu == 0)          /*Afin de laisser le joueur commencer : tant qu'il n'appuie pas sur espace, le jeu reste freeze en position de départ.*/
+        /*Le jeu ne commence que lorsque le joueur appuies sur 'espace'*/
+        if(jeu == 0)
+        {
+            SDL_WaitEvent(&event);
+            switch(event.type)
             {
-                SDL_Flip(SDL_GetVideoSurface());
-                SDL_WaitEvent(&event);
+                case SDL_QUIT:
+                    continuer = 0;
+                break;
+
+                case SDL_KEYDOWN:
+                    switch(event.key.keysym.sym)
+                    {
+                        case SDLK_SPACE:
+                            jeu++;
+                        break;
+
+                        case SDLK_ESCAPE:
+                            continuer = 0;
+                        break;
+
+                        default:
+                        break;
+                    }
+            }
+        }
+        /*Tant qu'il reste des briques*/
+        if(briquesRestantes > 0)
+        {
+        /*Mouvement barre*/
+        moveBall(&positionBalle, mapLevel);
+
+        SDL_PollEvent(&event);
                 switch(event.type)
                 {
                     case SDL_QUIT:
                         continuer = 0;
-                        break;
+                    break;
+
                     case SDL_KEYDOWN:
                         switch(event.key.keysym.sym)
                         {
-                            case SDLK_SPACE:
-                                jeu++;
-                                break;
                             case SDLK_ESCAPE:
                                 continuer = 0;
-                                break;
+                            break;
+
+                            case SDLK_RIGHT:
+                               moveBarre(&positionBarre, DROITE);
+                            break;
+
+                            case SDLK_LEFT:
+                                moveBarre(&positionBarre, GAUCHE);
+                            break;
+
                             default:
-                                break;
+                            break;
                         }
+                    break;
                 }
-            }
-            SDL_PollEvent(&event);
-                    switch(event.type)
-                    {
-                        case SDL_QUIT:
-                            continuer = 0;
-                            break;
-                        case SDL_KEYDOWN:
-                            switch(event.key.keysym.sym)
-                            {
-                                case SDLK_ESCAPE:
-                                    continuer = 0;
-                                    break;
-                                case SDLK_RIGHT:
-                                    moveBarre(&positionBarre, DROITE);
-                                    break;
-                                case SDLK_LEFT:
-                                    moveBarre(&positionBarre, GAUCHE);
-                                    break;
-                                default:
-                                    break;
-                            }
-                            break;
-                    }
+        }
+        /*Toutes les briques sont cassées*/
+        else if(briquesRestantes == 0)
+        {
+
+
+        }
         }
 }
 

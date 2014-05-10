@@ -8,22 +8,23 @@
 
 void moveBarre(SDL_Rect *positionBarre, int direction)
 {
+
     switch (direction)
     {
-        case DROITE: /* barre vers la droite */
-            if (positionBarre < 800) /* afin d'être bloqué par le mur */
+        case DROITE:
+            if (positionBarre->x < 400) /* bloqué par le mur */
             {
-                positionBarre->x++;
+                positionBarre->x = positionBarre->x++;
                 break;
             }
             else
             {
                 break;
             }
-        case GAUCHE: /* barre vers la gauche */
-            if (positionBarre > 0) /* afin d'être bloqué par le mur */
+        case GAUCHE:
+            if (positionBarre->x > 25) /* bloqué par le mur */
             {
-                positionBarre->x--;
+                positionBarre->x = positionBarre->x--;
                 break;
             }
             else
@@ -32,4 +33,13 @@ void moveBarre(SDL_Rect *positionBarre, int direction)
             }
 
     }
+}
+
+void moveBall(SDL_Rect *positionBalle, int mapLevel[][NB_BLOCS_LARGEUR])
+{
+    /*if(mapLevel[positionBalle->y + 1][positionBalle->x] == BRIQUE)
+    {
+        mapLevel[positionBalle->y + 1][positionBalle->x] = VIDE;
+    }*/
+    positionBalle->y = positionBalle->y--;
 }
