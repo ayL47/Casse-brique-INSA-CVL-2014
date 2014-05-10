@@ -24,6 +24,5 @@
 
 # Fichiers CodeBlocks
 *.exe
-*.cbp
 *.depend
 *.layout
