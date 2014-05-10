@@ -58,8 +58,15 @@
 		<Unit filename="level.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="level.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="move.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="move.h">
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Extensions>
 			<code_completion />
