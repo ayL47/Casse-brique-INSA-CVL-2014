@@ -13,7 +13,7 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
 
     int continuer = 1, briquesRestantes = 0, i = 0, j = 0, jeu = 0;
 
-while (continuer)/* Boucle de jeu */
+while (continuer)                                      /* Boucle de jeu */
     {
     positionBarre.x = 8;
     positionBarre.y = 19;
@@ -59,7 +59,7 @@ while (continuer)/* Boucle de jeu */
     SDL_BlitSurface(balle, NULL, SDL_GetVideoSurface(), &position);
     SDL_Flip(SDL_GetVideoSurface());
 
-    if (jeu == 0)/*Afin de laisser le joueur commencer : tant qu'il n'appuie pas sur espace, le jeu reste freeze en position de départ.*/
+    if (jeu == 0)          /*Afin de laisser le joueur commencer : tant qu'il n'appuie pas sur espace, le jeu reste freeze en position de départ.*/
         {
             SDL_Flip(SDL_GetVideoSurface());
             SDL_WaitEvent(&event);
