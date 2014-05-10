@@ -32,24 +32,39 @@ void menu()
     SDL_Surface *buttonPlay = NULL;
     SDL_Surface *buttonIns = NULL;
     SDL_Surface *instructions = NULL;
+    SDL_Surface *buttonRank = NULL;
+    SDL_Surface *rank = NULL;
+    SDL_Surface *buttonQuit = NULL;
+
     SDL_Rect positionButtonPlay;
     SDL_Rect positionButtonIns;
-    SDL_Rect positionInstruction;
+    SDL_Rect position;
+    SDL_Rect positionButtonRank;
+    SDL_Rect positionButtonQ;
 
     buttonPlay = SDL_LoadBMP("boutonJ_pas_survole.bmp");
     buttonIns = SDL_LoadBMP("boutonIns_pas_survole.bmp");
     instructions = SDL_LoadBMP("Instructions.bmp");
+    buttonRank = SDL_LoadBMP("boutonS_pas_survole.bmp");
+    rank = SDL_LoadBMP("Scores.bmp");
+    buttonQuit = SDL_LoadBMP("boutonQ_pas_survole.bmp");
 
 
-    positionButtonPlay.x=125;
-    positionButtonPlay.y=200;
-    positionButtonIns.x=125;
-    positionButtonIns.y=240;
-    positionInstruction.x=0;
-    positionInstruction.y=0;
+    positionButtonPlay.x = 125;
+    positionButtonPlay.y = 200;
+    positionButtonIns.x = positionButtonPlay.x;
+    positionButtonIns.y = positionButtonPlay.y+40;
+    position.x = 0;
+    position.y = 0;
+    positionButtonRank.x = positionButtonPlay.x;
+    positionButtonRank.y = positionButtonIns.y+40;
+    positionButtonQ.x = positionButtonPlay.x;
+    positionButtonQ.y = positionButtonRank.y+40;
 
     SDL_BlitSurface(buttonPlay, NULL, SDL_GetVideoSurface(), &positionButtonPlay);
     SDL_BlitSurface(buttonIns, NULL, SDL_GetVideoSurface(), &positionButtonIns);
+    SDL_BlitSurface(buttonRank, NULL, SDL_GetVideoSurface(), &positionButtonRank);
+    SDL_BlitSurface(buttonQuit, NULL, SDL_GetVideoSurface(), &positionButtonQ);
 
     SDL_Flip(SDL_GetVideoSurface());
 
@@ -65,13 +80,18 @@ void menu()
                 }
                 if (event.button.x>=positionButtonIns.x && event.button.x<=positionButtonIns.x+233 && event.button.y>=positionButtonIns.y && event.button.y<=positionButtonIns.y+37)
                 {
-                    SDL_BlitSurface(instructions, NULL, SDL_GetVideoSurface(), &positionInstruction);
+                    SDL_BlitSurface(instructions, NULL, SDL_GetVideoSurface(), &position);
                     SDL_Flip(SDL_GetVideoSurface());
                 }
-                /*if (event.button.x>=posCredits.x && event.button.x<=posCredits.x+LONGUEUR && event.button.y>=posCredits.y && event.button.y<=posCredits.y+LARGEUR)
+                if (event.button.x>=positionButtonRank.x && event.button.x<=positionButtonRank.x+233 && event.button.y>=positionButtonRank.y && event.button.y<=positionButtonRank.y+37)
                 {
-                    credits(ecran);
-                }*/
+                    SDL_BlitSurface(rank, NULL, SDL_GetVideoSurface(), &position);
+                    SDL_Flip(SDL_GetVideoSurface());
+                }
+                if (event.button.x>=positionButtonQ.x && event.button.x<=positionButtonQ.x+233 && event.button.y>=positionButtonQ.y && event.button.y<=positionButtonQ.y+37)
+                {
+                    close();
+                }
                 else
                 {
                     continuer = 1;
