@@ -93,7 +93,7 @@ void menu()
                 }
                 if (event.button.x>=positionButtonRank.x && event.button.x<=positionButtonRank.x+233 && event.button.y>=positionButtonRank.y && event.button.y<=positionButtonRank.y+37)
                 {
-                    score(rank, position, buttonBack, positionButtonBack);
+                    score(rank, position, buttonBack, positionButtonBack);/*si souris sur bouton scores*/
                 }
                 if (event.button.x>=positionButtonQ.x && event.button.x<=positionButtonQ.x+233 && event.button.y>=positionButtonQ.y && event.button.y<=positionButtonQ.y+37)
                 {
