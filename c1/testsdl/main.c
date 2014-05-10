@@ -78,7 +78,7 @@ void menu()
 
     while(continuer)
     {
-                SDL_WaitEvent(&event);
+        SDL_WaitEvent(&event);
         switch(event.type)
         {
             case SDL_MOUSEBUTTONUP:
@@ -118,9 +118,6 @@ void menu()
             break;
         }
     }
-
-
-
 
     SDL_FreeSurface(buttonPlay);
     SDL_FreeSurface(buttonQuit);

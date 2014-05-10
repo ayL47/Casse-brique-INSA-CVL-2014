@@ -23,7 +23,7 @@
 *.hex
 
 # Fichiers CodeBlocks
-*.exe
 *.cbp
 *.depend
 *.layout
+*.txt
