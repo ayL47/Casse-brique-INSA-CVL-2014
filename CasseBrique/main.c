@@ -45,14 +45,14 @@ void menu()
     SDL_Rect positionButtonQ;
     SDL_Rect positionButtonBack;
 
-    buttonPlay = SDL_LoadBMP("boutonJ_pas_survole.bmp");
-    buttonIns = SDL_LoadBMP("boutonIns_pas_survole.bmp");
-    instructions = SDL_LoadBMP("Instructions.bmp");
-    buttonRank = SDL_LoadBMP("boutonS_pas_survole.bmp");
-    rank = SDL_LoadBMP("Scores.bmp");
-    buttonQuit = SDL_LoadBMP("boutonQ_pas_survole.bmp");
-    buttonBack = SDL_LoadBMP("boutonR_pas_survole.bmp");
-    menu = SDL_LoadBMP("menu.bmp");
+    buttonPlay = SDL_LoadBMP("images/boutonJ_pas_survole.bmp");
+    buttonIns = SDL_LoadBMP("images/boutonIns_pas_survole.bmp");
+    instructions = SDL_LoadBMP("images/Instructions.bmp");
+    buttonRank = SDL_LoadBMP("images/boutonS_pas_survole.bmp");
+    rank = SDL_LoadBMP("images/Scores.bmp");
+    buttonQuit = SDL_LoadBMP("images/boutonQ_pas_survole.bmp");
+    buttonBack = SDL_LoadBMP("images/boutonR_pas_survole.bmp");
+    menu = SDL_LoadBMP("images/menu.bmp");
 
 
     positionButtonPlay.x = 125;
