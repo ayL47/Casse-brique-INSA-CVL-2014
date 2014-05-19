@@ -15,6 +15,7 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
     int deplacementBalleVertical = 0;
     int deplacementBalleHorizontal = 0;
 
+
     /* Boucle de jeu */
     while (continuer)
         {
@@ -22,10 +23,11 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
             {
                 positionBarre.x = 215;
                 positionBarre.y = 500;
-                positionBalle.x = 235;
+                positionBalle.x = positionBarre.x + 12.5;
                 positionBalle.y = 475;
                 levelLoad = 1;
                 deplacementBalleVertical = -1;
+                deplacementBalleHorizontal = -1;
             }
 
         SDL_FillRect(SDL_GetVideoSurface(), NULL, SDL_MapRGB(SDL_GetVideoSurface()->format, 0, 0, 0));
@@ -70,8 +72,9 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
         SDL_Flip(SDL_GetVideoSurface());
 
         /*Le jeu ne commence que lorsque le joueur appuies sur 'espace'*/
-        if(jeu == 0)
+        while(jeu == 0)
         {
+            SDL_Flip(SDL_GetVideoSurface());
             SDL_WaitEvent(&event);
             switch(event.type)
             {
@@ -98,8 +101,8 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
         /*Tant qu'il reste des briques*/
         if(briquesRestantes > 0)
         {
-        /*Mouvement barre*/
-        moveBall(&positionBalle, mapLevel);
+        /*Mouvement balle*/
+        moveBall(&positionBalle, &positionBarre, mapLevel, &deplacementBalleVertical, &deplacementBalleHorizontal);
 
         SDL_PollEvent(&event);
                 switch(event.type)
