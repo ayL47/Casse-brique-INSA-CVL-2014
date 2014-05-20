@@ -16,4 +16,10 @@ typedef struct        /* Gestion des événements */
     char key[SDLK_LAST];
 } Input;
 
+ struct Balle {
+        float x; //la vitesse horizontale de la balle
+        float y; //la vitesse verticale
+        float k; //coefficient multiplicateur de vitesse
+              }
+
 #endif // CONSTANTES_H_INCLUDED

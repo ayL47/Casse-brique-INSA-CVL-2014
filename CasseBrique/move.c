@@ -5,6 +5,7 @@
 #include "jeu.h"
 #include "constantes.h"
 #include "move.h"
+#include <math.h>
 
 void moveBarre(SDL_Rect *positionBarre, int direction)
 {
@@ -35,72 +36,157 @@ void moveBarre(SDL_Rect *positionBarre, int direction)
     }
 }
 
-void moveBall(SDL_Rect *positionBalle, SDL_Rect *positionBarre, int mapLevel[][NB_BLOCS_LARGEUR], int *verti, int *hori)
-{
-    int rebond = 0;
 
+
+void moveBall(SDL_Rect *positionBalle, SDL_Rect *positionBarre, int mapLevel[][NB_BLOCS_LARGEUR], int *verti, int *hori, int *life, int *continuer)
+{
 
     positionBalle->y = positionBalle->y + *verti;
+    positionBalle->x = positionBalle->x + *hori;
+
+    double caseX = floor((double) ((positionBalle->x) / 25));
+    double caseY = floor((double) ((positionBalle->y) / 25));
 
 
-    rebond = collision(positionBalle, positionBarre, mapLevel);
-
-    switch(rebond)
+    switch(*hori)
     {
-        case 1:
-            *verti = - *verti;
-            positionBalle->y = positionBalle->y + *verti;
-        break;
-
-        case 2:
+    case -1:
+            if(mapLevel[(int) caseY][(int) caseX] == BRIQUE) // si elle touche une brique
+            {
+                *verti = - *verti; // on inverse la trajectoire
+                positionBalle->y = positionBalle->y + *verti;
+            mapLevel[(int) caseY][(int) caseX] = VIDE; // la brique disparait
+            }
+            /*if((positionBalle->x)== 25 || (positionBalle->x) == LARGEUR_FENETRE-25) //Quand la balle touche les murs gauches et droits
+            {
             *hori = - *hori;
             positionBalle->x = positionBalle->x + *hori;
-        break;
+            }*/
+            //la balle touche le mur en haut
+            if(mapLevel[(int) caseY][(int) caseX] == MUR)
+            {
+                *verti =  *verti;
+                *hori = - *hori;
+                positionBalle->y = positionBalle->y + *verti;
+                positionBalle->x = positionBalle->x + *hori;
+            }
+            // la balle touche le mur en bas
+            if(positionBalle->y == HAUTEUR_FENETRE -25) //Quand la balle touche le mur du bas
+            {
 
-        case 3:
-            *verti= - *verti;
-            positionBalle->y = positionBalle->y + *verti;
-        break;
+            }
+            //la balle touche la raquette
+            if(positionBalle->y == positionBarre->y-25 && \
+            ((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)<= (positionBarre->x +75)))
+            {
+                    // coté gauche
+                if((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)< (positionBarre->x +25))
+                {
+                *verti= - *verti;
+                *hori = - *hori;
+                positionBalle->y = positionBalle->y + *verti;
+                positionBalle->x = positionBalle->x + *hori;
+                }
+                if((positionBalle->x) >= (positionBarre->x+25) && (positionBalle->x)<= (positionBarre->x +75))
+                {
+                *verti= - *verti;
+                positionBalle->y = positionBalle->y + *verti;
+                }
+            }
+    break;
 
-        case 4:
-            *verti = - *verti;
-            positionBalle->y = positionBalle->y + *verti;
-           /* mapLevel[positionBalle->y+25][positionBalle->x+25] = VIDE;*/
-        break;
+    //la balle se déplace verticalement
+    case 0:
+            if(mapLevel[(int) caseY][(int) caseX] == BRIQUE) // si elle touche une brique
+            {
+                *verti = - *verti; // on inverse la trajectoire
+                positionBalle->y = positionBalle->y + *verti;
+                mapLevel[(int) caseY][(int) caseX] = VIDE; // la brique disparait
+            }
+            //la balle touche la raquette
+            if(positionBalle->y == positionBarre->y-25 && \
+            ((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)<= (positionBarre->x +75)))
+            {
+                // coté gauche
+                if((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)< (positionBarre->x +10))
+                {
+                *verti= - *verti;
+                *hori = -1;
+                positionBalle->y = positionBalle->y + *verti;
+                positionBalle->x = positionBalle->x + *hori;
+                }
+                //au centre
+                if((positionBalle->x) >= (positionBarre->x+10) && (positionBalle->x)<= (positionBarre->x +60))
+                {
+                *verti= - *verti;
+                positionBalle->y = positionBalle->y + *verti;
+                }
+                //a droite
+                if((positionBalle->x+25) >= (positionBarre->x+60) && (positionBalle->x)<= (positionBarre->x +75))
+                {
+                *verti=  *verti;
+                *hori = 1;
+                positionBalle->y = positionBalle->y + *verti;
+                positionBalle->x = positionBalle->x + *hori;
+                }
+            }
+            //la balle touche le mur en haut
+            if(mapLevel[(int) caseY][(int) caseX] == MUR)
+            {
+                if(positionBalle->y < positionBarre->y)//Quand la balle touche le mur du bas
+                {
+                    life--;
+                    *continuer = 0;
+                }
+                else
+                {
+                *verti = - *verti;
+                positionBalle->y = positionBalle->y + *verti;
+                positionBalle->x = positionBalle->x + *hori;
+                }
+            }
+            // la balle touche le mur en bas
 
-        case 5:
 
-        break;
+    break;
+
+    case 1:
+            //la balle touche la raquette
+            if(positionBalle->y == positionBarre->y-25 && \
+            ((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)<= (positionBarre->x +75)))
+            {
+                // coté gauche
+                if((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)< (positionBarre->x +10))
+                {
+                *verti= - *verti;
+                *hori = -1;
+                positionBalle->y = positionBalle->y + *verti;
+                positionBalle->x = positionBalle->x + *hori;
+                }
+                if((positionBalle->x) >= (positionBarre->x+10) && (positionBalle->x)<= (positionBarre->x +60))
+                {
+                *verti= - *verti;
+                positionBalle->y = positionBalle->y + *verti;
+                }
+                if((positionBalle->x+25) >= (positionBarre->x+60) && (positionBalle->x)<= (positionBarre->x +75))
+                {
+                *verti=  *verti;
+                *hori = 1;
+                positionBalle->y = positionBalle->y + *verti;
+                positionBalle->x = positionBalle->x + *hori;
+                }
+            }
+            //la balle touche le mur en haut
+            if(mapLevel[(int) caseY][(int) caseX] == MUR)
+            {
+                *verti = - *verti;
+                *hori = - *hori;
+                positionBalle->y = positionBalle->y + *verti;
+                positionBalle->x = positionBalle->x + *hori;
+            }
+    break;
 
     }
 
-}
 
-int collision(SDL_Rect *positionBalle, SDL_Rect *positionBarre, int mapLevel[][NB_BLOCS_LARGEUR])
-{
-    int r = positionBalle->w/2;
-    int C = positionBalle->x + r;
-
-
-    if(positionBalle->y == 25) //Quand la balle touche le mur du haut
-    {
-        return 1;
-    }
-    if((positionBalle->x)== 25 || (positionBalle->x) == LARGEUR_FENETRE-25) //Quand la balle touche les murs gauches et droits
-    {
-        return 2;
-    }
-    if(positionBalle->y == positionBarre->y-25 && \
-       ((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)<= (positionBarre->x +75)))
-    {
-        return 3;
-    }
-    if((positionBalle->y >= 2*TAILLE_BLOC) &&(positionBalle->y <= 10*TAILLE_BLOC)) //Si la balle est dans le bloc des briques
-    {
-        return 4;
-    }
-        if(positionBalle->y == HAUTEUR_FENETRE -25) //Quand la balle touche le mur du bas
-    {
-        return 5;
-    }
 }

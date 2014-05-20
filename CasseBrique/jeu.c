@@ -14,6 +14,7 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
     int continuer = 1, briquesRestantes = 0, i = 0, j = 0, jeu = 0, levelLoad = 0;
     int deplacementBalleVertical = 0;
     int deplacementBalleHorizontal = 0;
+    int life = 3;
 
 
     /* Boucle de jeu */
@@ -27,7 +28,7 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
                 positionBalle.y = 475;
                 levelLoad = 1;
                 deplacementBalleVertical = -1;
-                deplacementBalleHorizontal = -1;
+                deplacementBalleHorizontal = 0;
             }
 
         SDL_FillRect(SDL_GetVideoSurface(), NULL, SDL_MapRGB(SDL_GetVideoSurface()->format, 0, 0, 0));
@@ -102,7 +103,7 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
         if(briquesRestantes > 0)
         {
         /*Mouvement balle*/
-        moveBall(&positionBalle, &positionBarre, mapLevel, &deplacementBalleVertical, &deplacementBalleHorizontal);
+        moveBall(&positionBalle, &positionBarre, mapLevel, &deplacementBalleVertical, &deplacementBalleHorizontal, &life, &continuer);
 
         SDL_PollEvent(&event);
                 switch(event.type)

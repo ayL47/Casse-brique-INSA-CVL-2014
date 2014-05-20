@@ -2,7 +2,7 @@
 #define MOVE_H_INCLUDED
 
 void moveBarre(SDL_Rect *positionBarre, int direction);
-void moveBall(SDL_Rect *positionBalle, SDL_Rect *positionBarre, int mapLevel[][NB_BLOCS_LARGEUR], int *verti, int *hori);
+void moveBall(SDL_Rect *positionBalle, SDL_Rect *positionBarre, int mapLevel[][NB_BLOCS_LARGEUR], int *verti, int *hori, int *life, int *continuer);
 
 
 #endif // MOVE_H_INCLUDED
