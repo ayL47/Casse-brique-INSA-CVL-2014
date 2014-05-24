@@ -1,6 +1,10 @@
 #ifndef CONSTANTES_H_INCLUDED
 #define CONSTANTES_H_INCLUDED
 #include <SDL/SDL.h>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9f280a5bd7561b75ffd05c515c91610cc31cb74a
 
 #define TAILLE_BLOC         25
 #define NB_BLOCS_LARGEUR    20

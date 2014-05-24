@@ -1,6 +1,10 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include "menu.h"
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9f280a5bd7561b75ffd05c515c91610cc31cb74a
 
 void menu()
 {
