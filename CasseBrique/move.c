@@ -80,37 +80,51 @@ void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int
         ball->Vy = newSpeedY;
     } else if(mapLevel[(int) caseYBas][(int) caseX] == MUR) {
         // Mur en bas
-        ball->Vy = newSpeedY;
+        *newgame = 1;
     }
 
-    if(mapLevel[(int) caseY][(int) caseXGauche] == BRIQUE) {
-        // Mur à gauche
+    /**
+    * Rebonds sur les briques
+    **/
+    else if(mapLevel[(int) caseY][(int) caseXGauche] == BRIQUE) {
+        // Brique sur la gauche
         ball->Vx = newSpeedX;
 
         // Suppression de la brique
         mapLevel[(int) caseY][(int) caseXGauche] = VIDE;
         *briquesRestantes--;
     } else if(mapLevel[(int) caseY][(int) caseXDroite] == BRIQUE) {
-        // Mur à droite
+        // Brique sur la droite
         ball->Vx = newSpeedX;
 
         // Suppression de la brique
         mapLevel[(int) caseY][(int) caseXDroite] = VIDE;
         *briquesRestantes--;
     } else if(mapLevel[(int) caseYHaut][(int) caseX] == BRIQUE) {
-        // Mur en haut
+        // Brique sur le haut
         ball->Vy = newSpeedY;
 
         // Suppression de la brique
         mapLevel[(int) caseYHaut][(int) caseX] = VIDE;
         *briquesRestantes--;
     } else if(mapLevel[(int) caseYBas][(int) caseX] == BRIQUE) {
-        // Mur en bas
+        // Brique sur le bas
         ball->Vy = newSpeedY;
 
         // Suppression de la brique
         mapLevel[(int) caseYBas][(int) caseX] = VIDE;
         *briquesRestantes--;
+    }
+
+    /**
+    * Rebonds sur la raquette
+    **/
+    else if(posBalleYBas == positionBarre->y) {
+        // Rebond raquette
+        if(((positionBalle->x + positionBalle->w) >= positionBarre->x) && (positionBalle->x <= (positionBarre->x + positionBarre->w))) {
+            // Rebond normal, vers le haut
+            ball->Vy = newSpeedY;
+        }
     }
 
     positionBalle->x +=  ball->k * ball->Vx;

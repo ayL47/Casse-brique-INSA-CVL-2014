@@ -41,7 +41,7 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
             positionBarre.x = 215;
             positionBarre.y = 500;
             positionBalle.x = (positionBarre.x + 25);
-            positionBalle.y = 475;
+            positionBalle.y = 474;
             levelLoad = 1;
             Vy = -1;
             Vx = 0;
