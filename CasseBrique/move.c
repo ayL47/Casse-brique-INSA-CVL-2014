@@ -94,12 +94,14 @@ if((*Vy == 1 || *Vy == -1) && (*Vx == 0))
         if((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)<= (positionBarre->x +25))
         {
             *Vy = 0;
-            ball-> y = 1;
+            ball->y = 1;
+            ball->x = -1;
         }
         else if((positionBalle->x) >= (positionBarre->x+50) && (positionBalle->x)<= (positionBarre->x +75))
         {
             *Vy = 0;
-            ball-> y = 1;
+            ball->y = 1;
+            ball->x = 1;
         }
         else
         {
@@ -119,7 +121,7 @@ else
         // coté gauche
         if((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)< (positionBarre->x +25))
         {
-        ball->x = - ball->x;
+            ball->x = ball->x;
         }
         //au centre
         else if((positionBalle->x) >= (positionBarre->x+25) && (positionBalle->x)<= (positionBarre->x +50))
