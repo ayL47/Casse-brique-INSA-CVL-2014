@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include "menu.h"
-#include <SDL/SDL_ttf.h>
 
 void menu()
 {

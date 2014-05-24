@@ -1,7 +1,6 @@
 #ifndef CONSTANTES_H_INCLUDED
 #define CONSTANTES_H_INCLUDED
 #include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
 
 #define TAILLE_BLOC         25
 #define NB_BLOCS_LARGEUR    20
@@ -22,10 +21,12 @@ typedef struct        /* Gestion des événements */
 
  typedef struct
  {
-        float Vx; //la vitesse horizontale de la balle
-        float Vy; //la vitesse verticale
+        double Vx; //la vitesse horizontale de la balle
+        double Vy; //la vitesse verticale
         float k; //coefficient multiplicateur de vitesse
+        float Ax; // Angle X
+        float Ay; // Angle y
         int x, y; //Position x et y
-}Ball;
+} Ball;
 
 #endif // CONSTANTES_H_INCLUDED
