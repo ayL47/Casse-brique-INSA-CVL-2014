@@ -1,7 +1,7 @@
 #ifndef CONSTANTES_H_INCLUDED
 #define CONSTANTES_H_INCLUDED
 #include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
+
 
 #define TAILLE_BLOC         25
 #define NB_BLOCS_LARGEUR    20

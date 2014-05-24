@@ -55,131 +55,130 @@ void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int
     double caseY = floor((double) ((positionBalle->y) / 25));
 
 //deplacement uniquement verticalement
-if((*Vy == 1 || *Vy == -1) && (*Vx == 0))
-{
-    if((mapLevel[(int) caseY][(int) caseX] == BRIQUE) &&(mapLevel[(int) caseY][(int) caseX+1] == BRIQUE))
+    if((*Vy == 1 || *Vy == -1) && (*Vx == 0))
     {
-        *Vy = - *Vy; // on inverse la trajectoire
-        mapLevel[(int) caseY][(int) caseX] = VIDE; // la brique disparait
-        mapLevel[(int) caseY][(int) caseX+1] = VIDE;
-        *briquesRestantes-2;
-    }
+        if((mapLevel[(int) caseY][(int) caseX] == BRIQUE) &&(mapLevel[(int) caseY][(int) caseX+1] == BRIQUE))
+        {
+            *Vy = - *Vy; // on inverse la trajectoire
+            mapLevel[(int) caseY][(int) caseX] = VIDE; // la brique disparait
+            mapLevel[(int) caseY][(int) caseX+1] = VIDE;
+            *briquesRestantes-2;
+        }
 
-    // si elle touche une seule brique
-    if(mapLevel[(int) caseY][(int) caseX] == BRIQUE)
-    {
-        *Vy = - *Vy; // on inverse la trajectoire
-        mapLevel[(int) caseY][(int) caseX] = VIDE; // la brique disparait
-        *briquesRestantes--;
-    }
+        // si elle touche une seule brique
+        if(mapLevel[(int) caseY][(int) caseX] == BRIQUE)
+        {
+            *Vy = - *Vy; // on inverse la trajectoire
+            mapLevel[(int) caseY][(int) caseX] = VIDE; // la brique disparait
+            *briquesRestantes--;
+        }
 
-    //la Balle touche un mur
-    if(mapLevel[(int) caseY][(int) caseX] == MUR)
+        //la Balle touche un mur
+        if(mapLevel[(int) caseY][(int) caseX] == MUR)
+        {
+            if(positionBalle->y > positionBarre->y)//Quand la Balle touche le mur du bas
+            {
+                *newgame = 1;
+            }
+            else // Touche le mur du haut
+            {
+                *Vy = - *Vy;
+            }
+        }
+        //la balle touche la raquette
+        if(positionBalle->y == positionBarre->y-25 && \
+        ((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)<= (positionBarre->x + positionBarre->w)))
+        {
+            // coté gauche
+            if((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)<= (positionBarre->x +25))
+            {
+                *Vy = 0;
+                ball->y = 1;
+                ball->x = -1;
+            }
+            else if((positionBalle->x) >= (positionBarre->x+50) && (positionBalle->x)<= (positionBarre->x +75))
+            {
+                *Vy = 0;
+                ball->y = 1;
+                ball->x = 1;
+            }
+            else
+            {
+                *Vy = -*Vy;
+            }
+        }
+    positionBalle->y -= *Vy;
+
+    }
+    else
     {
-        if(positionBalle->y > positionBarre->y)//Quand la Balle touche le mur du bas
+        //la balle touche la raquette
+        if(positionBalle->y == positionBarre->y-25 && \
+        ((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)<= (positionBarre->x +75)))
+        {
+            ball->y = - ball->y;
+            // coté gauche
+            if((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)< (positionBarre->x +25))
+            {
+                ball->x = ball->x;
+            }
+            //au centre
+            else if((positionBalle->x) >= (positionBarre->x+25) && (positionBalle->x)<= (positionBarre->x +50))
+            {
+                *Vy = 1;
+            }
+            else if((positionBalle->x) >= (positionBarre->x+25) && (positionBalle->x)<= (positionBarre->x +75))
+            {
+                ball->x = ball->x;
+            }
+
+        }
+        if(positionBalle->y > positionBarre->y + 50)//Quand la Balle touche le mur du bas
         {
             *newgame = 1;
-        }
-        else
-        {
-            *Vy = - *Vy;
-
-        }
-    }
-    //la balle touche la raquette
-    if(positionBalle->y == positionBarre->y-25 && \
-    ((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)<= (positionBarre->x + positionBarre->w)))
-    {
-        // coté gauche
-        if((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)<= (positionBarre->x +25))
-        {
-            *Vy = 0;
-            ball->y = 1;
-            ball->x = -1;
-        }
-        else if((positionBalle->x) >= (positionBarre->x+50) && (positionBalle->x)<= (positionBarre->x +75))
-        {
-            *Vy = 0;
-            ball->y = 1;
-            ball->x = 1;
-        }
-        else
-        {
-            *Vy = -*Vy;
-        }
-    }
-positionBalle->y -= *Vy;
-
-}
-else
-{
-    //la balle touche la raquette
-    if(positionBalle->y == positionBarre->y-25 && \
-    ((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)<= (positionBarre->x +75)))
-    {
-        ball->y = - ball->y;
-        // coté gauche
-        if((positionBalle->x+25) >= (positionBarre->x) && (positionBalle->x)< (positionBarre->x +25))
-        {
-            ball->x = ball->x;
-        }
-        //au centre
-        else if((positionBalle->x) >= (positionBarre->x+25) && (positionBalle->x)<= (positionBarre->x +50))
-        {
             *Vy = 1;
         }
-        else if((positionBalle->x) >= (positionBarre->x+25) && (positionBalle->x)<= (positionBarre->x +75))
+        if(mapLevel[(int) caseY][(int) caseX+1] == MUR) // mur droit
         {
-            ball->x = ball->x;
+            ball->x = -ball->x;
+        }
+        if(mapLevel[(int) caseY+1][(int) caseX] == MUR) // Mur gauche
+        {
+            ball-> x = -ball->x;
+        }
+        if((mapLevel[(int) caseY][(int) caseX] == BRIQUE) &&(mapLevel[(int) caseY][(int) caseX+1] == BRIQUE))
+        {
+            ball->x = -ball->x;
+            ball->y = -ball->y;
+            mapLevel[(int) caseY][(int) caseX] = VIDE; // la brique disparait
+            mapLevel[(int) caseY][(int) caseX+1] = VIDE;
         }
 
-    }
-    if(positionBalle->y > positionBarre->y + 50)//Quand la Balle touche le mur du bas
-    {
-        *newgame = 1;
-        *Vy = 1;
-    }
-    if(mapLevel[(int) caseY][(int) caseX+1] == MUR) // mur droit
-    {
-        ball->x = -ball->x;
-    }
-    if(mapLevel[(int) caseY-1][(int) caseX] == MUR)
-    {
-        ball-> x = -ball->x;
-    }
-    if((mapLevel[(int) caseY][(int) caseX] == BRIQUE) &&(mapLevel[(int) caseY][(int) caseX+1] == BRIQUE))
-    {
-        ball->x = -ball->x;
-        ball->y = -ball->y;
-        mapLevel[(int) caseY][(int) caseX] = VIDE; // la brique disparait
-        mapLevel[(int) caseY][(int) caseX+1] = VIDE;
-    }
-
-    // si elle touche une seule brique
-    else if(mapLevel[(int) caseY][(int) caseX] == BRIQUE)
-    {
-        ball->x = -ball->x;
-        ball->y = -ball->y;
-        mapLevel[(int) caseY][(int) caseX] = VIDE; // la brique disparait
-    }
-    else if(mapLevel[(int) caseY+1][(int) caseX] == BRIQUE)
-    {
-        ball->x = -ball->x;
-        ball->y = -ball->y;
-        mapLevel[(int) caseY+1][(int) caseX] = VIDE; // la brique disparait
-    }
         // si elle touche une seule brique
-    else if(mapLevel[(int) caseY][(int) caseX+1] == BRIQUE)
-    {
-        ball->x = -ball->x;
-        ball->y = -ball->y;
-        mapLevel[(int) caseY][(int) caseX+1] = VIDE; // la brique disparait
+        else if(mapLevel[(int) caseY][(int) caseX] == BRIQUE)
+        {
+            ball->x = -ball->x;
+            ball->y = -ball->y;
+            mapLevel[(int) caseY][(int) caseX] = VIDE; // la brique disparait
+        }
+        else if(mapLevel[(int) caseY+1][(int) caseX] == BRIQUE)
+        {
+            ball->x = -ball->x;
+            ball->y = -ball->y;
+            mapLevel[(int) caseY+1][(int) caseX] = VIDE; // la brique disparait
+        }
+            // si elle touche une seule brique
+        else if(mapLevel[(int) caseY][(int) caseX+1] == BRIQUE)
+        {
+            ball->x = -ball->x;
+            ball->y = -ball->y;
+            mapLevel[(int) caseY][(int) caseX+1] = VIDE; // la brique disparait
+        }
+
+    positionBalle->x +=  ball->k * ball->x;
+    positionBalle->y +=  ball->k * ball->y;
+
     }
-
-positionBalle->x +=  ball->k * ball->x;
-positionBalle->y +=  ball->k * ball->y;
-
-}
 }
 
 

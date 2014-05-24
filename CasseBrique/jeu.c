@@ -120,39 +120,39 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
         if(briquesRestantes > 0)
         {
 
-        /*Mouvement balle*/
-        moveBalle(&positionBalle, &ball, &positionBarre, mapLevel, &Vy, &Vx, &newgame, &briquesRestantes);
+            /*Mouvement balle*/
+            moveBalle(&positionBalle, &ball, &positionBarre, mapLevel, &Vy, &Vx, &newgame, &briquesRestantes);
 
-        SDL_PollEvent(&event);
-                switch(event.type)
-                {
-                    case SDL_QUIT:
-                        continuer = 0;
-                    break;
+            SDL_PollEvent(&event);
+                    switch(event.type)
+                    {
+                        case SDL_QUIT:
+                            continuer = 0;
+                        break;
 
-                    case SDL_KEYDOWN:
-                        switch(event.key.keysym.sym)
-                        {
-                            case SDLK_ESCAPE:
-                                continuer = 0;
-                            break;
+                        case SDL_KEYDOWN:
+                            switch(event.key.keysym.sym)
+                            {
+                                case SDLK_ESCAPE:
+                                    continuer = 0;
+                                break;
 
-                            case SDLK_RIGHT:
-                               moveBarre(&positionBarre, DROITE);
-                            break;
+                                case SDLK_RIGHT:
+                                   moveBarre(&positionBarre, DROITE);
+                                break;
 
-                            case SDLK_LEFT:
-                                moveBarre(&positionBarre, GAUCHE);
-                            break;
+                                case SDLK_LEFT:
+                                    moveBarre(&positionBarre, GAUCHE);
+                                break;
 
-                            default:
-                            break;
-                        }
-                    break;
+                                default:
+                                break;
+                            }
+                        break;
 
-                    default:
-                    break;
-                }
+                        default:
+                        break;
+                    }
 
         }
         /*Toutes les briques sont cassées*/
