@@ -11,44 +11,28 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
     SDL_Rect position, positionBalle, positionBarre;
     SDL_Event event;
 
-    Ball ball;
-    ball.k = 1;
-    ball.x = 1;
-    ball.y = 1;
-
     int continuer = 1, briquesRestantes = 0, i = 0, j = 0, jeu = 0, levelLoad = 0;
-    int Vy = 0, debut = 0;
-    int Vx = 0;
+    int deplacementBalleVertical = 0;
+    int deplacementBalleHorizontal = 0;
     int life = 3, newgame = 0;
-    int tempsA = 0, tempsP = 0;
 
 
     /* Boucle de jeu */
     while (continuer)
         {
-    /*TTF_Font *police = NULL;
-    SDL_Surface *texte;
-    police = TTF_OpenFont("colibria.ttf", 30);
-    SDL_Color couleurBlanche = {255, 255, 255};
-    texte = TTF_RenderText_Blended(police, "TEUB", couleurBlanche);
-    SDL_Rect positionT;
-    positionT.x = 0;
-    positionT.y = 0;
-    SDL_BlitSurface(texte, NULL, SDL_GetVideoSurface(), &positionT);*/
-
 
             if(levelLoad == 0)
             {
                 positionBarre.x = 215;
                 positionBarre.y = 500;
-                positionBalle.x = (positionBarre.x + 25);
+                positionBalle.x = positionBarre.x + 12.5;
                 positionBalle.y = 475;
                 levelLoad = 1;
-                Vy = -1;
-                Vx = 0;
+                deplacementBalleVertical = -1;
+                deplacementBalleHorizontal = 0;
             }
 
-       SDL_FillRect(SDL_GetVideoSurface(), NULL, SDL_MapRGB(SDL_GetVideoSurface()->format, 0, 0, 0));
+        SDL_FillRect(SDL_GetVideoSurface(), NULL, SDL_MapRGB(SDL_GetVideoSurface()->format, 0, 0, 0));
 
         /*Rempli la carte*/
         for (i = 0 ; i < NB_BLOCS_HAUTEUR ; i++)
@@ -119,9 +103,8 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
         /*Tant qu'il reste des briques*/
         if(briquesRestantes > 0)
         {
-
         /*Mouvement balle*/
-        moveBalle(&positionBalle, &ball, &positionBarre, mapLevel, &Vy, &Vx, &newgame, &briquesRestantes);
+        moveBall(&positionBalle, &positionBarre, mapLevel, &deplacementBalleVertical, &deplacementBalleHorizontal, &newgame, &briquesRestantes);
 
         SDL_PollEvent(&event);
                 switch(event.type)
@@ -149,17 +132,13 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
                             break;
                         }
                     break;
-
-                    default:
-                    break;
                 }
-
         }
         /*Toutes les briques sont cassées*/
         else if(briquesRestantes == 0)
         {
 
-
+            //chagnger niveau
         }
         if(life == 0)
         {
@@ -172,8 +151,8 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
             newgame = 0;
             life--;
         }
-    }
-
+        }
+        menu();
 }
 
 void play()
@@ -195,7 +174,6 @@ void play()
 
     loadLevel(mapLevel, level);
     boucleJeu(balle, barre, brique, mur, vide, mapLevel);
-
 
     SDL_FreeSurface(balle);
     SDL_FreeSurface(barre);
