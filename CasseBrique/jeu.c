@@ -113,50 +113,11 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
         }
 
         /*Tant qu'il reste des briques*/
-<<<<<<< HEAD
         if(briquesRestantes > 0) {
             /*Mouvement balle*/
             moveBalle(&positionBalle, &ball, &positionBarre, mapLevel, &Vy, &Vx, &newgame, &briquesRestantes);
 
             SDL_PollEvent(&event);
-=======
-        if(briquesRestantes > 0)
-        {
-
-            /*Mouvement balle*/
-            moveBalle(&positionBalle, &ball, &positionBarre, mapLevel, &Vy, &Vx, &newgame, &briquesRestantes);
-
-            SDL_PollEvent(&event);
-                    switch(event.type)
-                    {
-                        case SDL_QUIT:
-                            continuer = 0;
-                        break;
-
-                        case SDL_KEYDOWN:
-                            switch(event.key.keysym.sym)
-                            {
-                                case SDLK_ESCAPE:
-                                    continuer = 0;
-                                break;
-
-                                case SDLK_RIGHT:
-                                   moveBarre(&positionBarre, DROITE);
-                                break;
-
-                                case SDLK_LEFT:
-                                    moveBarre(&positionBarre, GAUCHE);
-                                break;
-
-                                default:
-                                break;
-                            }
-                        break;
-
-                        default:
-                        break;
-                    }
->>>>>>> 9f280a5bd7561b75ffd05c515c91610cc31cb74a
 
             switch(event.type) {
                 case SDL_QUIT:

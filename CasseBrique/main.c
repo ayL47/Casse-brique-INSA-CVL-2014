@@ -24,6 +24,3 @@ void close(void)
     SDL_Quit(); /* Fermeture SDL */
 
 }
-
-
-
