@@ -6,8 +6,7 @@
 #include "constantes.h"
 #include "move.h"
 
-void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_Surface *mur, SDL_Surface *vide,int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR])
-{
+void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_Surface *mur, SDL_Surface *vide,int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR]) {
     SDL_Rect position, positionBalle, positionBarre;
     SDL_Event event;
 
@@ -164,8 +163,7 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
     }
 }
 
-void play()
-{
+void play() {
     int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR] = {{0}};
     int level=1;
 
@@ -184,11 +182,8 @@ void play()
     loadLevel(mapLevel, level);
     boucleJeu(balle, barre, brique, mur, vide, mapLevel);
 
-
     SDL_FreeSurface(balle);
     SDL_FreeSurface(barre);
     SDL_FreeSurface(mur);
     SDL_FreeSurface(vide);
-
 }
-

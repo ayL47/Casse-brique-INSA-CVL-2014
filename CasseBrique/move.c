@@ -7,32 +7,20 @@
 #include "move.h"
 #include <math.h>
 
-void moveBarre(SDL_Rect *positionBarre, int direction)
-{
-
-    switch (direction)
-    {
+void moveBarre(SDL_Rect *positionBarre, int direction) {
+    switch (direction) {
         case DROITE:
-            if (positionBarre->x < 400) /* bloqué par le mur */
-            {
+            /* Bloqué par le mur */
+            if (positionBarre->x < 400) {
                 positionBarre->x = positionBarre->x++;
-        break;
             }
-            else
-            {
         break;
-            }
         case GAUCHE:
-            if (positionBarre->x > 25) /* bloqué par le mur */
-            {
+            /* bloqué par le mur */
+            if (positionBarre->x > 25) {
                 positionBarre->x = positionBarre->x--;
-        break;
             }
-            else
-            {
         break;
-            }
-
     }
 }
 
