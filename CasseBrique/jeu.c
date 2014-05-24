@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <SDL/SDL.h>
+
 #include "level.h"
 #include "jeu.h"
 #include "constantes.h"
@@ -11,21 +12,15 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
     SDL_Event event;
 
     Ball ball;
-    ball.k = 1;
-    ball.x = 1;
-    ball.y = -1;
-    ball.Vx = 1;
-    ball.Vy = -1;
-
-    int continuer = 1, briquesRestantes = 0, i = 0, j = 0, jeu = 0, levelLoad = 0;
-    int Vy = 0, debut = 0;
-    int Vx = 0;
+    int continuer = 1, briquesRestantes = 0, i = 0, j = 0, jeu = 0, initLevel = 0;
+    int debut = 0;
     int life = 3, newgame = 0;
-    int tempsA = 0, tempsP = 0;
+    int level = 1;
 
+    loadLevel(mapLevel, level);
 
     /* Boucle de jeu */
-    while (continuer) {
+    while(continuer) {
         /*TTF_Font *police = NULL;
         SDL_Surface *texte;
         police = TTF_OpenFont("colibria.ttf", 30);
@@ -36,20 +31,27 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
         positionT.y = 0;
         SDL_BlitSurface(texte, NULL, SDL_GetVideoSurface(), &positionT);*/
 
-        if(levelLoad == 0) {
+        if(initLevel == 0) {
+            // Initialisation de la balle
+            ball.Vx = 1;
+            ball.Vy = -1;
+
+            // Initialisation position de la barre
             positionBarre.x = 215;
             positionBarre.y = 500;
+
+            // Initialisation position de la balle
             positionBalle.x = (positionBarre.x + 25);
-            positionBalle.y = 474;
-            levelLoad = 1;
-            Vy = -1;
-            Vx = 0;
+            positionBalle.y = (positionBarre.y - 25 - 1); // -1 Pour ne pas mettre la balle pile sur la barre
+            initLevel = 1;
         }
 
        SDL_FillRect(SDL_GetVideoSurface(), NULL, SDL_MapRGB(SDL_GetVideoSurface()->format, 0, 0, 0));
 
-        /*Rempli la carte*/
-        for (i = 0 ; i < NB_BLOCS_HAUTEUR ; i++) {
+        /**
+        * Affiche le terrain
+        **/
+        for(i = 0 ; i < NB_BLOCS_HAUTEUR ; i++) {
             for (j = 0 ; j < NB_BLOCS_LARGEUR ; j++) {
                 position.x = j * TAILLE_BLOC;
                 position.y = i * TAILLE_BLOC;
@@ -74,23 +76,24 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
             }
         }
 
-        /*Transparence de la balle*/
+        // Transparence de la balle
         SDL_SetColorKey(balle, SDL_SRCCOLORKEY, SDL_MapRGB(balle->format, 255, 255, 255));
 
-        /*Blittage de la barre et de la balle*/
+        // Blittage de la barre et de la balle
         SDL_BlitSurface(barre, NULL, SDL_GetVideoSurface(), &positionBarre);
         SDL_BlitSurface(balle, NULL, SDL_GetVideoSurface(), &positionBalle);
 
-        /*Mise a Jour de l'écran*/
+        // Mise a Jour de l'écran
         SDL_Flip(SDL_GetVideoSurface());
 
-        /*Le jeu ne commence que lorsque le joueur appuies sur 'espace'*/
+        // Le jeu ne commence que lorsque le joueur appuie sur 'espace'
         while(jeu == 0) {
             SDL_Flip(SDL_GetVideoSurface());
             SDL_WaitEvent(&event);
 
             switch(event.type) {
                 case SDL_QUIT:
+                    jeu++;
                     continuer = 0;
                 break;
 
@@ -101,20 +104,18 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
                         break;
 
                         case SDLK_ESCAPE:
+                            jeu++;
                             continuer = 0;
-                        break;
-
-                        default:
                         break;
                     }
                 break;
             }
         }
 
-        /*Tant qu'il reste des briques*/
+        // Tant qu'il reste des briques
         if(briquesRestantes > 0) {
-            /*Mouvement balle*/
-            moveBalle(&positionBalle, &ball, &positionBarre, mapLevel, &Vy, &Vx, &newgame, &briquesRestantes);
+            // Mouvement balle
+            moveBalle(&positionBalle, &ball, &positionBarre, mapLevel, &newgame, &briquesRestantes);
 
             SDL_PollEvent(&event);
 
@@ -124,8 +125,7 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
                 break;
 
                 case SDL_KEYDOWN:
-                    switch(event.key.keysym.sym)
-                    {
+                    switch(event.key.keysym.sym) {
                         case SDLK_ESCAPE:
                             continuer = 0;
                         break;
@@ -137,35 +137,36 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
                         case SDLK_LEFT:
                             moveBarre(&positionBarre, GAUCHE);
                         break;
-
-                        default:
-                        break;
                     }
                 break;
-
-                default:
-                break;
             }
-        }
-        /*Toutes les briques sont cassées*/
-        else if(briquesRestantes == 0) {
-        }
-        if(life == 0) {
-            continuer = 0;
+        } else if(briquesRestantes == 0) {
+            // Toutes les briques sont cassées
+            // Afficher gagner et aller au niveau suivant
+            level++;
+
+            loadLevel(mapLevel, level);
+
+            jeu = 0;
+            initLevel = 0;
         }
 
         if(newgame == 1) {
             jeu = 0;
-            levelLoad = 0;
+            initLevel = 0;
             newgame = 0;
             life--;
+        }
+
+        if(life == 0) {
+            // Afficher écran perdu
+            continuer = 0;
         }
     }
 }
 
 void play() {
     int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR] = {{0}};
-    int level=1;
 
     SDL_Surface *balle = NULL;
     SDL_Surface *barre = NULL;
@@ -179,7 +180,6 @@ void play() {
     mur = SDL_LoadBMP("images/mur.bmp");
     vide = SDL_LoadBMP("images/fond.bmp");
 
-    loadLevel(mapLevel, level);
     boucleJeu(balle, barre, brique, mur, vide, mapLevel);
 
     SDL_FreeSurface(balle);

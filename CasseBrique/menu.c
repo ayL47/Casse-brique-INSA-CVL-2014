@@ -73,6 +73,14 @@ void menu(SDL_Surface *buttonPlay, SDL_Surface *buttonIns, SDL_Surface *instruct
                 if(event.button.x>=positionButtonPlay.x && event.button.x<=positionButtonPlay.x+233 && event.button.y>=positionButtonPlay.y && event.button.y<=positionButtonPlay.y+37) {
                     // Si souris sur bouton jouer
                     play();
+
+                    SDL_BlitSurface(menu, NULL, SDL_GetVideoSurface(), &position);
+                    SDL_BlitSurface(buttonPlay, NULL, SDL_GetVideoSurface(), &positionButtonPlay);
+                    SDL_BlitSurface(buttonIns, NULL, SDL_GetVideoSurface(), &positionButtonIns);
+                    SDL_BlitSurface(buttonRank, NULL, SDL_GetVideoSurface(), &positionButtonRank);
+                    SDL_BlitSurface(buttonQuit, NULL, SDL_GetVideoSurface(), &positionButtonQ);
+
+                    SDL_Flip(SDL_GetVideoSurface());
                 } else if(event.button.x>=positionButtonIns.x && event.button.x<=positionButtonIns.x+233 && event.button.y>=positionButtonIns.y && event.button.y<=positionButtonIns.y+37) {
                     // Si souris sur bouton instructions
                     instruction(instructions, position, buttonBack, positionButtonBack);

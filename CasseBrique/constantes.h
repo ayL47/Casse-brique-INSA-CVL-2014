@@ -21,12 +21,8 @@ typedef struct        /* Gestion des événements */
 
  typedef struct
  {
-        double Vx; //la vitesse horizontale de la balle
-        double Vy; //la vitesse verticale
-        float k; //coefficient multiplicateur de vitesse
-        float Ax; // Angle X
-        float Ay; // Angle y
-        int x, y; //Position x et y
+        double Vx; // Vitesse horizontale de la balle
+        double Vy; // Vitesse verticale
 } Ball;
 
 #endif // CONSTANTES_H_INCLUDED
