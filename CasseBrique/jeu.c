@@ -7,7 +7,7 @@
 #include "constantes.h"
 #include "move.h"
 
-void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_Surface *mur, SDL_Surface *vide,int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR], SDL_Surface **imgchiffre) {
+void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_Surface *mur, SDL_Surface *vide, int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR], SDL_Surface **imgchiffre) {
     SDL_Rect position, positionBalle, positionBarre;
     SDL_Event event;
 
@@ -19,12 +19,9 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
     int score = 0;
 
     loadLevel(mapLevel, level, &briquesRestantes);
-    /*afficheScores(&imgchiffre);
-    afficheLife(&imgchiffre);
 
     /* Boucle de jeu */
     while(continuer) {
-
         /**
         * Initialisation de la balle; avec sa position, ainsi que la barre
         **/
@@ -43,7 +40,7 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
             initLevel = 1;
         }
 
-       SDL_FillRect(SDL_GetVideoSurface(), NULL, SDL_MapRGB(SDL_GetVideoSurface()->format, 0, 0, 0));
+        SDL_FillRect(SDL_GetVideoSurface(), NULL, SDL_MapRGB(SDL_GetVideoSurface()->format, 0, 0, 0));
 
         /**
         * Affiche le terrain
@@ -60,7 +57,6 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
 
                     case BRIQUE:
                         SDL_BlitSurface(brique, NULL, SDL_GetVideoSurface(), &position);
-                      //  briquesRestantes++;
                         break;
 
                     case VIDE:
@@ -73,6 +69,14 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
             }
         }
 
+        // Affichage du texte score
+        afficheScores(imgchiffre);
+
+        // Affichage du texte vie
+        afficheLife(imgchiffre);
+
+        majScore(&score, imgchiffre);
+
         // Transparence de la balle
         SDL_SetColorKey(balle, SDL_SRCCOLORKEY, SDL_MapRGB(balle->format, 255, 255, 255));
 
@@ -80,8 +84,7 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
         SDL_BlitSurface(barre, NULL, SDL_GetVideoSurface(), &positionBarre);
         SDL_BlitSurface(balle, NULL, SDL_GetVideoSurface(), &positionBalle);
 
-
-        // Mise a Jour de l'écran
+        // Mise à Jour de l'écran
         SDL_Flip(SDL_GetVideoSurface());
 
         // Le jeu ne commence que lorsque le joueur appuie sur 'espace'
@@ -116,61 +119,31 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
             }
         }
 
-        // Tant qu'il reste des briques
-        if(briquesRestantes > 0) {
-            // Mouvement balle
-            moveBalle(&positionBalle, &ball, &positionBarre, mapLevel, &newgame, &briquesRestantes, imgchiffre);
+        if(continuer == 1) {
+            // Tant qu'il reste des briques
+            if(briquesRestantes > 0) {
+                // Mouvement balle
+                moveBalle(&positionBalle, &ball, &positionBarre, mapLevel, &newgame, &briquesRestantes, imgchiffre, &score);
 
-            SDL_PollEvent(&event);
+                SDL_PollEvent(&event);
 
-            switch(event.type) {
-                case SDL_QUIT:
-                    continuer = 0;
-                break;
-
-                case SDL_KEYDOWN:
-                    switch(event.key.keysym.sym) {
-                        case SDLK_ESCAPE:
-                            continuer = 0;
-                        break;
-
-                        case SDLK_RIGHT:
-                           moveBarre(&positionBarre, DROITE);
-                        break;
-
-                        case SDLK_LEFT:
-                            moveBarre(&positionBarre, GAUCHE);
-                        break;
-
-                        default:
-                        break;
-                    }
-                break;
-
-                default:
-                break;
-            }
-        } else if(briquesRestantes == 0) {
-            // Toutes les briques sont cassées
-            // Afficher gagner et aller au niveau suivant
-            int i = 1;
-            afficheWin();
-            SDL_Flip(SDL_GetVideoSurface());
-            while(i){
-                SDL_WaitEvent(&event);
                 switch(event.type) {
                     case SDL_QUIT:
-                        i = 0;
+                        continuer = 0;
                     break;
 
                     case SDL_KEYDOWN:
                         switch(event.key.keysym.sym) {
-                            case SDLK_RETURN:
-                                i = 0;
+                            case SDLK_ESCAPE:
+                                continuer = 0;
                             break;
 
-                            case SDLK_ESCAPE:
-                                i = 0;
+                            case SDLK_RIGHT:
+                               moveBarre(&positionBarre, DROITE);
+                            break;
+
+                            case SDLK_LEFT:
+                                moveBarre(&positionBarre, GAUCHE);
                             break;
 
                             default:
@@ -181,54 +154,88 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
                     default:
                     break;
                 }
+            } else if(briquesRestantes == 0) {
+                // Toutes les briques sont cassées
+                // Afficher gagner et aller au niveau suivant
+                int i = 1;
+                afficheWin();
+                SDL_Flip(SDL_GetVideoSurface());
+                while(i){
+                    SDL_WaitEvent(&event);
+                    switch(event.type) {
+                        case SDL_QUIT:
+                            i = 0;
+                        break;
+
+                        case SDL_KEYDOWN:
+                            switch(event.key.keysym.sym) {
+                                case SDLK_RETURN:
+                                    i = 0;
+                                break;
+
+                                case SDLK_ESCAPE:
+                                    i = 0;
+                                break;
+
+                                default:
+                                break;
+                            }
+                        break;
+
+                        default:
+                        break;
+                    }
+                }
+                level++;
+
+                loadLevel(mapLevel, level, &briquesRestantes);
+
+                jeu = 0;
+                initLevel = 0;
+                life = 3;
             }
-            level++;
 
-            loadLevel(mapLevel, level, &briquesRestantes);
+            //Si une vie a été perdue
+            if(newgame == 1) {
+                jeu = 0;
+                initLevel = 0;
+                newgame = 0;
+                life--;
+            }
 
-            jeu = 0;
-            initLevel = 0;
-            life = 3;
-        }
-        //Si une vie a été perdue
-        if(newgame == 1) {
-            jeu = 0;
-            initLevel = 0;
-            newgame = 0;
-            life--;
-        }
-        //Si toutes les vies ont été perdues
-        if(life == 0) {
-            //MAJ du nombres de vies
-           // afficheLife(life);
+            //Si toutes les vies ont été perdues
+            if(life == 0) {
+                //MAJ du nombres de vies
+               // afficheLife(life);
 
-            // Afficher écran perdu
-            afficheLoose();
-            SDL_Flip(SDL_GetVideoSurface());
-            while(continuer){
-                SDL_WaitEvent(&event);
-                switch(event.type) {
-                    case SDL_QUIT:
-                        continuer = 0;
-                    break;
+                // Afficher écran perdu
+                afficheLoose();
+                SDL_Flip(SDL_GetVideoSurface());
+                while(continuer){
+                    SDL_WaitEvent(&event);
+                    switch(event.type) {
+                        case SDL_QUIT:
+                            continuer = 0;
+                        break;
 
-                    case SDL_KEYDOWN:
-                        switch(event.key.keysym.sym) {
-                            case SDLK_RETURN:
-                                continuer = 0;
-                            break;
+                        case SDL_KEYDOWN:
+                            switch(event.key.keysym.sym) {
+                                case SDLK_RETURN:
+                                    continuer = 0;
+                                break;
 
-                            case SDLK_ESCAPE:
-                                continuer = 0;
-                            break;
+                                case SDLK_ESCAPE:
+                                    continuer = 0;
+                                break;
 
-                            default:
-                            break;
-                        }
-                    break;
+                                default:
+                                break;
+                            }
+                        break;
 
-                    default:
-                    break;
+                        default:
+                        break;
+                    }
                 }
             }
         }
@@ -237,8 +244,6 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
 
 void play() {
     int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR] = {{0}};
-    SDL_Surface **imgchiffre;
-    imgchiffre = (SDL_Surface**)malloc(sizeof(SDL_Surface*)*11);
 
     SDL_Surface *balle = NULL;
     SDL_Surface *barre = NULL;
@@ -253,6 +258,12 @@ void play() {
     mur = SDL_LoadBMP("images/mur.bmp");
     vide = SDL_LoadBMP("images/fond.bmp");
 
+    /**
+    * Initialisation du tableau des images des chiffres et score et vie
+    **/
+    SDL_Surface **imgchiffre;
+    imgchiffre = (SDL_Surface**)malloc(sizeof(SDL_Surface*)*12);
+
     imgchiffre[0] = SDL_LoadBMP("images/0.bmp");
     imgchiffre[1] = SDL_LoadBMP("images/1.bmp");
     imgchiffre[2] = SDL_LoadBMP("images/2.bmp");
@@ -266,7 +277,7 @@ void play() {
     imgchiffre[10] = SDL_LoadBMP("images/score.bmp");
     imgchiffre[11] = SDL_LoadBMP("images/Vies.bmp");
 
-    //Transparence des chiffres
+    // Transparence des chiffres
     SDL_SetColorKey(imgchiffre[0], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[0]->format, 0, 0, 0));
     SDL_SetColorKey(imgchiffre[1], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[1]->format, 0, 0, 0));
     SDL_SetColorKey(imgchiffre[2], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[2]->format, 0, 0, 0));
@@ -281,12 +292,13 @@ void play() {
     SDL_SetColorKey(imgchiffre[10], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[10]->format, 0, 0, 0));
     SDL_SetColorKey(imgchiffre[11], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[11]->format, 0, 0, 0));
 
-    boucleJeu(balle, barre, brique, mur, vide, mapLevel, *imgchiffre);
+    // Appel de la boucle de jeu
+    boucleJeu(balle, barre, brique, mur, vide, mapLevel, imgchiffre);
 
+    // Libération mémoire
     SDL_FreeSurface(balle);
     SDL_FreeSurface(barre);
     SDL_FreeSurface(mur);
     SDL_FreeSurface(vide);
     SDL_FreeSurface(*imgchiffre);
-
 }

@@ -61,9 +61,10 @@ int loadLevel(int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR], int level, int *
                 valueBlock = strmapLevel[(i * NB_BLOCS_LARGEUR) + j];
 
                 mapLevel[i][j] = valueBlock;
-                    if(valueBlock == 1){
-                        briquesRestantes++;
-                    }
+
+                if(valueBlock == 1) {
+                    (*briquesRestantes)++;
+                }
             }
         }
     } else if(level == 2) {
@@ -74,9 +75,10 @@ int loadLevel(int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR], int level, int *
                 valueBlock = strmapLevel[(i * NB_BLOCS_LARGEUR) + j];
 
                 mapLevel[i][j] = valueBlock;
-                    if(valueBlock == 1){
-                        briquesRestantes++;
-                    }
+
+                if(valueBlock == 1) {
+                    (*briquesRestantes)++;
+                }
             }
         }
     }

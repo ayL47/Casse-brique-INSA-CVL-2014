@@ -24,12 +24,12 @@ void moveBarre(SDL_Rect *positionBarre, int direction) {
     }
 }
 
-void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int mapLevel[][NB_BLOCS_LARGEUR], int *newgame, int *briquesRestantes, SDL_Surface **imgchiffre) {
+void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int mapLevel[][NB_BLOCS_LARGEUR], int *newgame, int *briquesRestantes, SDL_Surface **imgchiffre, int *score) {
     /**
     * En X : 1 vers la droite, -1 vers la gauche
     * En Y : 1 descend, -1 monte
     **/
-
+    //SDL_Rect position;
     double caseX = floor((double) ((positionBalle->x) / 25));
     double caseY = floor((double) ((positionBalle->y) / 25));
 
@@ -75,7 +75,11 @@ void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int
 
         // Suppression de la brique
         mapLevel[(int) caseY][(int) caseXGauche] = VIDE;
+
         *briquesRestantes--;
+        (*score)++;
+
+        majScore(score, imgchiffre);
     } else if(mapLevel[(int) caseY][(int) caseXDroite] == BRIQUE) {
         // Brique sur la droite
         ball->Vx = newSpeedX;
@@ -83,6 +87,9 @@ void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int
         // Suppression de la brique
         mapLevel[(int) caseY][(int) caseXDroite] = VIDE;
         *briquesRestantes--;
+        (*score)++;
+
+        majScore(score, imgchiffre);
     } else if(mapLevel[(int) caseYHaut][(int) caseX] == BRIQUE) {
         // Brique sur le haut
         ball->Vy = newSpeedY;
@@ -90,6 +97,9 @@ void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int
         // Suppression de la brique
         mapLevel[(int) caseYHaut][(int) caseX] = VIDE;
         *briquesRestantes--;
+        (*score)++;
+
+        majScore(score, imgchiffre);
     } else if(mapLevel[(int) caseYBas][(int) caseX] == BRIQUE) {
         // Brique sur le bas
         ball->Vy = newSpeedY;
@@ -97,6 +107,9 @@ void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int
         // Suppression de la brique
         mapLevel[(int) caseYBas][(int) caseX] = VIDE;
         *briquesRestantes--;
+        (*score)++;
+
+        majScore(score, imgchiffre);
     }
 
     /**

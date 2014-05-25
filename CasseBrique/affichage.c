@@ -7,15 +7,19 @@
 #include "constantes.h"
 #include "move.h"
 
-void afficheScores(SDL_Surface ** imgchiffre){
+void afficheScores(SDL_Surface **imgchiffre){
     SDL_Rect positionScore;
     positionScore.x = 75;
     positionScore.y = 0;
-    SDL_BlitSurface(imgchiffre[10], NULL, SDL_GetVideoSurface(), &positionScore);
 
+    SDL_BlitSurface(imgchiffre[10], NULL, SDL_GetVideoSurface(), &positionScore);
 }
 
-void majScore(int score, SDL_Surface **imgchiffre){
+void blitChiffre(int value, SDL_Surface **imgchiffre, SDL_Rect *position) {
+    SDL_BlitSurface(imgchiffre[value], NULL, SDL_GetVideoSurface(), position);
+}
+
+void majScore(int *score, SDL_Surface **imgchiffre) {
     SDL_Rect positionChiffreC, positionChiffreD, positionChiffreU;
 
     positionChiffreC.x = 125;
@@ -25,12 +29,15 @@ void majScore(int score, SDL_Surface **imgchiffre){
     positionChiffreU.x = positionChiffreD.x + 10;
     positionChiffreU.y = positionChiffreC.y;
 
+    int c = *score/100;
+    int d = (*score/10)%10;
+    int u = (*score%10);
 
-    int c = score/100;
-    int d = (score/10)%10;
-    int u = (score%10);
+    blitChiffre(c, imgchiffre, &positionChiffreC);
+    blitChiffre(d, imgchiffre, &positionChiffreD);
+    blitChiffre(u, imgchiffre, &positionChiffreU);
 
-    switch(c){
+    /*switch(c){
         case 0:
             SDL_BlitSurface(imgchiffre[0], NULL, SDL_GetVideoSurface(), &positionChiffreC);
         break;
@@ -51,6 +58,7 @@ void majScore(int score, SDL_Surface **imgchiffre){
             SDL_BlitSurface(imgchiffre[4], NULL, SDL_GetVideoSurface(), &positionChiffreC);
         break;
     }
+
     switch(d){
         case 0:
             SDL_BlitSurface(imgchiffre[0], NULL, SDL_GetVideoSurface(), &positionChiffreD);
@@ -91,6 +99,7 @@ void majScore(int score, SDL_Surface **imgchiffre){
             SDL_BlitSurface(imgchiffre[9], NULL, SDL_GetVideoSurface(), &positionChiffreD);
         break;
     }
+
     switch(u){
         case 0:
             SDL_BlitSurface(imgchiffre[0], NULL, SDL_GetVideoSurface(), &positionChiffreU);
@@ -130,7 +139,7 @@ void majScore(int score, SDL_Surface **imgchiffre){
         case 9:
             SDL_BlitSurface(imgchiffre[9], NULL, SDL_GetVideoSurface(), &positionChiffreU);
         break;
-    }
+    }*/
 }
 
 
@@ -166,10 +175,11 @@ void afficheWin(){
 
 }
 
-void afficheLife (SDL_Surface **imgchiffre){
+void afficheLife(SDL_Surface **imgchiffre) {
     SDL_Rect positionLife;
     positionLife.x = 375;
     positionLife.y = 0;
+
     SDL_BlitSurface(imgchiffre[11], NULL, SDL_GetVideoSurface(), &positionLife);
 }
 
