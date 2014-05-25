@@ -7,7 +7,7 @@
 #include "constantes.h"
 #include "move.h"
 
-void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_Surface *mur, SDL_Surface *vide,int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR]) {
+void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_Surface *mur, SDL_Surface *vide,int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR], SDL_Surface **imgchiffre) {
     SDL_Rect position, positionBalle, positionBarre;
     SDL_Event event;
 
@@ -18,7 +18,9 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
     int level = 1;
     int score = 0;
 
-    loadLevel(mapLevel, level);
+    loadLevel(mapLevel, level, &briquesRestantes);
+    /*afficheScores(&imgchiffre);
+    afficheLife(&imgchiffre);
 
     /* Boucle de jeu */
     while(continuer) {
@@ -58,7 +60,7 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
 
                     case BRIQUE:
                         SDL_BlitSurface(brique, NULL, SDL_GetVideoSurface(), &position);
-                        briquesRestantes++;
+                      //  briquesRestantes++;
                         break;
 
                     case VIDE:
@@ -78,12 +80,6 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
         SDL_BlitSurface(barre, NULL, SDL_GetVideoSurface(), &positionBarre);
         SDL_BlitSurface(balle, NULL, SDL_GetVideoSurface(), &positionBalle);
 
-        //Blitage des scores
-        score = 128 - briquesRestantes;
-        afficheScore(score);
-
-        //Blitage des vies
-        afficheLife(life);
 
         // Mise a Jour de l'écran
         SDL_Flip(SDL_GetVideoSurface());
@@ -123,7 +119,7 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
         // Tant qu'il reste des briques
         if(briquesRestantes > 0) {
             // Mouvement balle
-            moveBalle(&positionBalle, &ball, &positionBarre, mapLevel, &newgame, &briquesRestantes);
+            moveBalle(&positionBalle, &ball, &positionBarre, mapLevel, &newgame, &briquesRestantes, imgchiffre);
 
             SDL_PollEvent(&event);
 
@@ -188,7 +184,7 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
             }
             level++;
 
-            loadLevel(mapLevel, level);
+            loadLevel(mapLevel, level, &briquesRestantes);
 
             jeu = 0;
             initLevel = 0;
@@ -204,7 +200,7 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
         //Si toutes les vies ont été perdues
         if(life == 0) {
             //MAJ du nombres de vies
-            afficheLife(life);
+           // afficheLife(life);
 
             // Afficher écran perdu
             afficheLoose();
@@ -241,12 +237,15 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
 
 void play() {
     int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR] = {{0}};
+    SDL_Surface **imgchiffre;
+    imgchiffre = (SDL_Surface**)malloc(sizeof(SDL_Surface*)*11);
 
     SDL_Surface *balle = NULL;
     SDL_Surface *barre = NULL;
     SDL_Surface *brique = NULL;
     SDL_Surface *mur = NULL;
     SDL_Surface *vide = NULL;
+    SDL_Surface *Life = NULL;
 
     balle = SDL_LoadBMP("images/balle.bmp");
     barre = SDL_LoadBMP("images/barre.bmp");
@@ -254,10 +253,40 @@ void play() {
     mur = SDL_LoadBMP("images/mur.bmp");
     vide = SDL_LoadBMP("images/fond.bmp");
 
-    boucleJeu(balle, barre, brique, mur, vide, mapLevel);
+    imgchiffre[0] = SDL_LoadBMP("images/0.bmp");
+    imgchiffre[1] = SDL_LoadBMP("images/1.bmp");
+    imgchiffre[2] = SDL_LoadBMP("images/2.bmp");
+    imgchiffre[3] = SDL_LoadBMP("images/3.bmp");
+    imgchiffre[4] = SDL_LoadBMP("images/4.bmp");
+    imgchiffre[5] = SDL_LoadBMP("images/5.bmp");
+    imgchiffre[6] = SDL_LoadBMP("images/6.bmp");
+    imgchiffre[7] = SDL_LoadBMP("images/7.bmp");
+    imgchiffre[8] = SDL_LoadBMP("images/8.bmp");
+    imgchiffre[9] = SDL_LoadBMP("images/9.bmp");
+    imgchiffre[10] = SDL_LoadBMP("images/score.bmp");
+    imgchiffre[11] = SDL_LoadBMP("images/Vies.bmp");
+
+    //Transparence des chiffres
+    SDL_SetColorKey(imgchiffre[0], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[0]->format, 0, 0, 0));
+    SDL_SetColorKey(imgchiffre[1], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[1]->format, 0, 0, 0));
+    SDL_SetColorKey(imgchiffre[2], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[2]->format, 0, 0, 0));
+    SDL_SetColorKey(imgchiffre[3], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[3]->format, 0, 0, 0));
+    SDL_SetColorKey(imgchiffre[4], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[4]->format, 0, 0, 0));
+    SDL_SetColorKey(imgchiffre[5], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[5]->format, 0, 0, 0));
+    SDL_SetColorKey(imgchiffre[6], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[6]->format, 0, 0, 0));
+    SDL_SetColorKey(imgchiffre[7], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[7]->format, 0, 0, 0));
+    SDL_SetColorKey(imgchiffre[8], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[8]->format, 0, 0, 0));
+    SDL_SetColorKey(imgchiffre[9], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[9]->format, 0, 0, 0));
+
+    SDL_SetColorKey(imgchiffre[10], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[10]->format, 0, 0, 0));
+    SDL_SetColorKey(imgchiffre[11], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[11]->format, 0, 0, 0));
+
+    boucleJeu(balle, barre, brique, mur, vide, mapLevel, *imgchiffre);
 
     SDL_FreeSurface(balle);
     SDL_FreeSurface(barre);
     SDL_FreeSurface(mur);
     SDL_FreeSurface(vide);
+    SDL_FreeSurface(*imgchiffre);
+
 }

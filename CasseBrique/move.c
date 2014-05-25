@@ -24,7 +24,7 @@ void moveBarre(SDL_Rect *positionBarre, int direction) {
     }
 }
 
-void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int mapLevel[][NB_BLOCS_LARGEUR], int *newgame, int *briquesRestantes) {
+void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int mapLevel[][NB_BLOCS_LARGEUR], int *newgame, int *briquesRestantes, SDL_Surface **imgchiffre) {
     /**
     * En X : 1 vers la droite, -1 vers la gauche
     * En Y : 1 descend, -1 monte
