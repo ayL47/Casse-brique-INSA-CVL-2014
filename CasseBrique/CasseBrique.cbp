@@ -45,6 +45,12 @@
 			<Add library="dxguid" />
 			<Add directory="C:/Users/Jean-Rémy/Desktop/SDL-1.2.15/lib" />
 		</Linker>
+		<Unit filename="affichage.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="affichage.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="cb.bmp" />
 		<Unit filename="constantes.h">
 			<Option target="&lt;{~None~}&gt;" />

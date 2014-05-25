@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
     SDL_Init(SDL_INIT_VIDEO);
     //TTF_Init();
     SDL_SetVideoMode(LARGEUR_FENETRE, HAUTEUR_FENETRE, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
-    SDL_WM_SetCaption(":: Casse brique ::", NULL);
+    SDL_WM_SetCaption(":: Casse-briques ::", NULL);
 
     // Affichage du menu
     initMenu();

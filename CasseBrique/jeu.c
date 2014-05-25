@@ -16,21 +16,16 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
     int debut = 0;
     int life = 3, newgame = 0;
     int level = 1;
+    int score = 0;
 
     loadLevel(mapLevel, level);
 
     /* Boucle de jeu */
     while(continuer) {
-        /*TTF_Font *police = NULL;
-        SDL_Surface *texte;
-        police = TTF_OpenFont("colibria.ttf", 30);
-        SDL_Color couleurBlanche = {255, 255, 255};
-        texte = TTF_RenderText_Blended(police, "TEUB", couleurBlanche);
-        SDL_Rect positionT;
-        positionT.x = 0;
-        positionT.y = 0;
-        SDL_BlitSurface(texte, NULL, SDL_GetVideoSurface(), &positionT);*/
 
+        /**
+        * Initialisation de la balle; avec sa position, ainsi que la barre
+        **/
         if(initLevel == 0) {
             // Initialisation de la balle
             ball.Vx = 1;
@@ -83,6 +78,13 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
         SDL_BlitSurface(barre, NULL, SDL_GetVideoSurface(), &positionBarre);
         SDL_BlitSurface(balle, NULL, SDL_GetVideoSurface(), &positionBalle);
 
+        //Blitage des scores
+        score = 128 - briquesRestantes;
+        afficheScore(score);
+
+        //Blitage des vies
+        afficheLife(life);
+
         // Mise a Jour de l'écran
         SDL_Flip(SDL_GetVideoSurface());
 
@@ -107,7 +109,13 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
                             jeu++;
                             continuer = 0;
                         break;
+
+                        default:
+                        break;
                     }
+                break;
+
+                default:
                 break;
             }
         }
@@ -137,30 +145,96 @@ void boucleJeu(SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_
                         case SDLK_LEFT:
                             moveBarre(&positionBarre, GAUCHE);
                         break;
+
+                        default:
+                        break;
                     }
+                break;
+
+                default:
                 break;
             }
         } else if(briquesRestantes == 0) {
             // Toutes les briques sont cassées
             // Afficher gagner et aller au niveau suivant
+            int i = 1;
+            afficheWin();
+            SDL_Flip(SDL_GetVideoSurface());
+            while(i){
+                SDL_WaitEvent(&event);
+                switch(event.type) {
+                    case SDL_QUIT:
+                        i = 0;
+                    break;
+
+                    case SDL_KEYDOWN:
+                        switch(event.key.keysym.sym) {
+                            case SDLK_RETURN:
+                                i = 0;
+                            break;
+
+                            case SDLK_ESCAPE:
+                                i = 0;
+                            break;
+
+                            default:
+                            break;
+                        }
+                    break;
+
+                    default:
+                    break;
+                }
+            }
             level++;
 
             loadLevel(mapLevel, level);
 
             jeu = 0;
             initLevel = 0;
+            life = 3;
         }
-
+        //Si une vie a été perdue
         if(newgame == 1) {
             jeu = 0;
             initLevel = 0;
             newgame = 0;
             life--;
         }
-
+        //Si toutes les vies ont été perdues
         if(life == 0) {
+            //MAJ du nombres de vies
+            afficheLife(life);
+
             // Afficher écran perdu
-            continuer = 0;
+            afficheLoose();
+            SDL_Flip(SDL_GetVideoSurface());
+            while(continuer){
+                SDL_WaitEvent(&event);
+                switch(event.type) {
+                    case SDL_QUIT:
+                        continuer = 0;
+                    break;
+
+                    case SDL_KEYDOWN:
+                        switch(event.key.keysym.sym) {
+                            case SDLK_RETURN:
+                                continuer = 0;
+                            break;
+
+                            case SDLK_ESCAPE:
+                                continuer = 0;
+                            break;
+
+                            default:
+                            break;
+                        }
+                    break;
+
+                    default:
+                    break;
+                }
+            }
         }
     }
 }
