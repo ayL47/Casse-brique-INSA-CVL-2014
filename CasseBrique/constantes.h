@@ -7,22 +7,26 @@
 #define NB_BLOCS_HAUTEUR    24
 #define LARGEUR_FENETRE     TAILLE_BLOC * NB_BLOCS_LARGEUR
 #define HAUTEUR_FENETRE     TAILLE_BLOC * NB_BLOCS_HAUTEUR
-#define coeff 0.2
-#define Mur_D LARGEUR_FENETRE-TAILLE_BLOC
-#define BALLE_D positionBalle.x+TAILLE_BLOC
+#define TAILLE_MAX_PSEUDO   20
 
-enum {MUR, BRIQUE, VIDE};
+enum {MUR, BRIQUE, VIDE, BRIQUEVIE};
 enum {GAUCHE, DROITE};
 
-typedef struct        /* Gestion des événements */
+/*typedef struct        /* Gestion des événements
 {
     char key[SDLK_LAST];
-} Input;
+} Input;*/
 
- typedef struct
- {
+ typedef struct{
         double Vx; // Vitesse horizontale de la balle
         double Vy; // Vitesse verticale
 } Ball;
+
+typedef struct{
+        int score;
+        char pseudo[TAILLE_MAX_PSEUDO];
+        int classement;
+}Joueur;
+
 
 #endif // CONSTANTES_H_INCLUDED

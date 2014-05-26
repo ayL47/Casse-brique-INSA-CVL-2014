@@ -6,6 +6,7 @@
 #include "constantes.h"
 #include "move.h"
 #include <math.h>
+#include "classement.h"
 
 void moveBarre(SDL_Rect *positionBarre, int direction) {
     switch (direction) {
@@ -24,7 +25,7 @@ void moveBarre(SDL_Rect *positionBarre, int direction) {
     }
 }
 
-void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int mapLevel[][NB_BLOCS_LARGEUR], int *newgame, int *briquesRestantes, SDL_Surface **imgchiffre, int *score) {
+void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int mapLevel[][NB_BLOCS_LARGEUR], int *newgame, int *briquesRestantes, SDL_Surface **imgchiffre, int *score, int *life) {
     /**
     * En X : 1 vers la droite, -1 vers la gauche
     * En Y : 1 descend, -1 monte
@@ -76,7 +77,7 @@ void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int
         // Suppression de la brique
         mapLevel[(int) caseY][(int) caseXGauche] = VIDE;
 
-        *briquesRestantes--;
+        (*briquesRestantes)--;
         (*score)++;
 
         majScore(score, imgchiffre);
@@ -86,7 +87,7 @@ void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int
 
         // Suppression de la brique
         mapLevel[(int) caseY][(int) caseXDroite] = VIDE;
-        *briquesRestantes--;
+        (*briquesRestantes)--;
         (*score)++;
 
         majScore(score, imgchiffre);
@@ -96,7 +97,7 @@ void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int
 
         // Suppression de la brique
         mapLevel[(int) caseYHaut][(int) caseX] = VIDE;
-        *briquesRestantes--;
+        (*briquesRestantes)--;
         (*score)++;
 
         majScore(score, imgchiffre);
@@ -106,7 +107,7 @@ void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int
 
         // Suppression de la brique
         mapLevel[(int) caseYBas][(int) caseX] = VIDE;
-        *briquesRestantes--;
+        (*briquesRestantes)--;
         (*score)++;
 
         majScore(score, imgchiffre);
@@ -121,6 +122,55 @@ void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int
             // Rebond normal, vers le haut
             ball->Vy = newSpeedY;
         }
+    }
+    /**
+    * Rebonds sur les briques vies
+    **/
+    else if(mapLevel[(int) caseY][(int) caseXGauche] == BRIQUEVIE) {
+        // Brique sur la gauche
+        ball->Vx = newSpeedX;
+
+        // Suppression de la brique
+        mapLevel[(int) caseY][(int) caseXGauche] = VIDE;
+
+        (*briquesRestantes)--;
+        (*score)++;
+        (*life)++;
+
+        majScore(score, imgchiffre);
+    } else if(mapLevel[(int) caseY][(int) caseXDroite] == BRIQUEVIE) {
+        // Brique sur la droite
+        ball->Vx = newSpeedX;
+
+        // Suppression de la brique
+        mapLevel[(int) caseY][(int) caseXDroite] = VIDE;
+        (*briquesRestantes)--;
+        (*score)++;
+        (*life)++;
+
+        majScore(score, imgchiffre);
+    } else if(mapLevel[(int) caseYHaut][(int) caseX] == BRIQUEVIE) {
+        // Brique sur le haut
+        ball->Vy = newSpeedY;
+
+        // Suppression de la brique
+        mapLevel[(int) caseYHaut][(int) caseX] = VIDE;
+        (*briquesRestantes)--;
+        (*score)++;
+        (*life)++;
+
+        majScore(score, imgchiffre);
+    } else if(mapLevel[(int) caseYBas][(int) caseX] == BRIQUEVIE) {
+        // Brique sur le bas
+        ball->Vy = newSpeedY;
+
+        // Suppression de la brique
+        mapLevel[(int) caseYBas][(int) caseX] = VIDE;
+        (*briquesRestantes)--;
+        (*score)++;
+        (*life)++;
+
+        majScore(score, imgchiffre);
     }
 
     positionBalle->x +=  ball->Vx;

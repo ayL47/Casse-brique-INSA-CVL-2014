@@ -7,10 +7,11 @@
 #include "constantes.h"
 #include "move.h"
 
+//Affichage du texte: score
 void afficheScores(SDL_Surface **imgchiffre){
     SDL_Rect positionScore;
-    positionScore.x = 75;
-    positionScore.y = 0;
+    positionScore.x = 50;
+    positionScore.y = -1;
 
     SDL_BlitSurface(imgchiffre[10], NULL, SDL_GetVideoSurface(), &positionScore);
 }
@@ -19,14 +20,15 @@ void blitChiffre(int value, SDL_Surface **imgchiffre, SDL_Rect *position) {
     SDL_BlitSurface(imgchiffre[value], NULL, SDL_GetVideoSurface(), position);
 }
 
+//Mise à jours de l'affichage des scores
 void majScore(int *score, SDL_Surface **imgchiffre) {
     SDL_Rect positionChiffreC, positionChiffreD, positionChiffreU;
 
-    positionChiffreC.x = 125;
-    positionChiffreC.y = 3;
-    positionChiffreD.x = positionChiffreC.x + 10;
+    positionChiffreC.x = 110;
+    positionChiffreC.y = 0;
+    positionChiffreD.x = positionChiffreC.x + 25;
     positionChiffreD.y = positionChiffreC.y;
-    positionChiffreU.x = positionChiffreD.x + 10;
+    positionChiffreU.x = positionChiffreD.x + 25;
     positionChiffreU.y = positionChiffreC.y;
 
     int c = *score/100;
@@ -37,112 +39,9 @@ void majScore(int *score, SDL_Surface **imgchiffre) {
     blitChiffre(d, imgchiffre, &positionChiffreD);
     blitChiffre(u, imgchiffre, &positionChiffreU);
 
-    /*switch(c){
-        case 0:
-            SDL_BlitSurface(imgchiffre[0], NULL, SDL_GetVideoSurface(), &positionChiffreC);
-        break;
-
-        case 1:
-            SDL_BlitSurface(imgchiffre[1], NULL, SDL_GetVideoSurface(), &positionChiffreC);
-        break;
-
-        case 2:
-            SDL_BlitSurface(imgchiffre[2], NULL, SDL_GetVideoSurface(), &positionChiffreC);
-        break;
-
-        case 3:
-            SDL_BlitSurface(imgchiffre[3], NULL, SDL_GetVideoSurface(), &positionChiffreC);
-        break;
-
-        case 4:
-            SDL_BlitSurface(imgchiffre[4], NULL, SDL_GetVideoSurface(), &positionChiffreC);
-        break;
-    }
-
-    switch(d){
-        case 0:
-            SDL_BlitSurface(imgchiffre[0], NULL, SDL_GetVideoSurface(), &positionChiffreD);
-        break;
-
-        case 1:
-            SDL_BlitSurface(imgchiffre[1], NULL, SDL_GetVideoSurface(), &positionChiffreD);
-        break;
-
-        case 2:
-            SDL_BlitSurface(imgchiffre[2], NULL, SDL_GetVideoSurface(), &positionChiffreD);
-        break;
-
-        case 3:
-            SDL_BlitSurface(imgchiffre[3], NULL, SDL_GetVideoSurface(), &positionChiffreD);
-        break;
-
-        case 4:
-            SDL_BlitSurface(imgchiffre[4], NULL, SDL_GetVideoSurface(), &positionChiffreD);
-        break;
-        case 5:
-            SDL_BlitSurface(imgchiffre[5], NULL, SDL_GetVideoSurface(), &positionChiffreD);
-        break;
-
-        case 6:
-            SDL_BlitSurface(imgchiffre[6], NULL, SDL_GetVideoSurface(), &positionChiffreD);
-        break;
-
-        case 7:
-            SDL_BlitSurface(imgchiffre[7], NULL, SDL_GetVideoSurface(), &positionChiffreD);
-        break;
-
-        case 8:
-            SDL_BlitSurface(imgchiffre[8], NULL, SDL_GetVideoSurface(), &positionChiffreD);
-        break;
-
-        case 9:
-            SDL_BlitSurface(imgchiffre[9], NULL, SDL_GetVideoSurface(), &positionChiffreD);
-        break;
-    }
-
-    switch(u){
-        case 0:
-            SDL_BlitSurface(imgchiffre[0], NULL, SDL_GetVideoSurface(), &positionChiffreU);
-        break;
-
-        case 1:
-            SDL_BlitSurface(imgchiffre[1], NULL, SDL_GetVideoSurface(), &positionChiffreU);
-        break;
-
-        case 2:
-            SDL_BlitSurface(imgchiffre[2], NULL, SDL_GetVideoSurface(), &positionChiffreU);
-        break;
-
-        case 3:
-            SDL_BlitSurface(imgchiffre[3], NULL, SDL_GetVideoSurface(), &positionChiffreU);
-        break;
-
-        case 4:
-            SDL_BlitSurface(imgchiffre[4], NULL, SDL_GetVideoSurface(), &positionChiffreU);
-        break;
-        case 5:
-            SDL_BlitSurface(imgchiffre[5], NULL, SDL_GetVideoSurface(), &positionChiffreU);
-        break;
-
-        case 6:
-            SDL_BlitSurface(imgchiffre[6], NULL, SDL_GetVideoSurface(), &positionChiffreU);
-        break;
-
-        case 7:
-            SDL_BlitSurface(imgchiffre[7], NULL, SDL_GetVideoSurface(), &positionChiffreU);
-        break;
-
-        case 8:
-            SDL_BlitSurface(imgchiffre[8], NULL, SDL_GetVideoSurface(), &positionChiffreU);
-        break;
-
-        case 9:
-            SDL_BlitSurface(imgchiffre[9], NULL, SDL_GetVideoSurface(), &positionChiffreU);
-        break;
-    }*/
 }
 
-
+//Affiche 'perdue' si plus de vies
 void afficheLoose(){
     SDL_Rect position;
 
@@ -159,6 +58,7 @@ void afficheLoose(){
 
 }
 
+//Affiche 'victoire' si niveau passé
 void afficheWin(){
     SDL_Rect position;
 
@@ -175,41 +75,23 @@ void afficheWin(){
 
 }
 
+//Affichage du texte: Vies
 void afficheLife(SDL_Surface **imgchiffre) {
     SDL_Rect positionLife;
-    positionLife.x = 375;
-    positionLife.y = 0;
+
+    positionLife.x = 370;
+    positionLife.y = -1;
 
     SDL_BlitSurface(imgchiffre[11], NULL, SDL_GetVideoSurface(), &positionLife);
 }
 
-
+//Mise a jours de l'affichage du nombre de vies
 void majLife (int life, SDL_Surface **imgchiffre){
     SDL_Rect positionNbLife;
 
-    positionNbLife.x = 420;
-    positionNbLife.y = 2;
+    positionNbLife.x = 410;
+    positionNbLife.y = 0;
 
+    blitChiffre(life, imgchiffre, &positionNbLife);
 
-    switch(life){
-        case 0:
-            SDL_BlitSurface(imgchiffre[0], NULL, SDL_GetVideoSurface(), &positionNbLife);
-        break;
-
-        case 1:
-            SDL_BlitSurface(imgchiffre[1], NULL, SDL_GetVideoSurface(), &positionNbLife);
-        break;
-
-        case 2:
-            SDL_BlitSurface(imgchiffre[2], NULL, SDL_GetVideoSurface(), &positionNbLife);
-        break;
-
-        case 3:
-            SDL_BlitSurface(imgchiffre[3], NULL, SDL_GetVideoSurface(), &positionNbLife);
-        break;
-
-        case 4:
-            SDL_BlitSurface(imgchiffre[4], NULL, SDL_GetVideoSurface(), &positionNbLife);
-        break;
-    }
 }

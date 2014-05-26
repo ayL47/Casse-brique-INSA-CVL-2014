@@ -52,6 +52,12 @@
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="cb.bmp" />
+		<Unit filename="classement.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="classement.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="constantes.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
