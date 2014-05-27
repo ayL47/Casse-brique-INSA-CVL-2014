@@ -156,9 +156,10 @@ void score(SDL_Surface *rank, SDL_Rect position, SDL_Surface *buttonBack, SDL_Re
     SDL_BlitSurface(rank, NULL, SDL_GetVideoSurface(), &position);
     SDL_BlitSurface(buttonBack, NULL, SDL_GetVideoSurface(), &positionButtonBack);
     SDL_Flip(SDL_GetVideoSurface());
+
     affiche();
 
-    while (continuer) {
+    while(continuer) {
         SDL_WaitEvent(&event);
 
         switch(event.type) {

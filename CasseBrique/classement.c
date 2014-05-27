@@ -8,25 +8,23 @@
 #include <math.h>
 #include "classement.h"
 
-void saisieTexte(Joueur *joueur){
-
+void saisieTexte(Joueur *joueur) {
     SDL_Event eventSaisie;
     SDL_EnableUNICODE(1);
 
     int position = 0, continuerSaisie = 1;
     int nb = 0;
+
     while(continuerSaisie) {
         SDL_WaitEvent(&eventSaisie);
         if(eventSaisie.type == SDL_KEYDOWN){
             if(eventSaisie.key.keysym.sym == SDLK_RETURN){
                 SDL_EnableUNICODE(0);
                 continuerSaisie = 0;
-            }
-            else if(eventSaisie.key.keysym.sym == SDLK_SPACE){
+            } else if(eventSaisie.key.keysym.sym == SDLK_SPACE){
                 SDL_EnableUNICODE(0);
                 continuerSaisie = 0;
-            }
-            else if(((eventSaisie.key.keysym.unicode & 0xFF00) == 0x0000) && (position + 1 < TAILLE_MAX_PSEUDO) ) {
+            } else if(((eventSaisie.key.keysym.unicode & 0xFF00) == 0x0000) && (position + 1 < TAILLE_MAX_PSEUDO) ) {
                 joueur->pseudo[position] = eventSaisie.key.keysym.unicode;
                 position++;
                 joueur->pseudo[position] = '\0';
@@ -34,12 +32,12 @@ void saisieTexte(Joueur *joueur){
                 afficheTexte(*joueur, nb);
             }
         }
-    SDL_Flip(SDL_GetVideoSurface());
+
+        SDL_Flip(SDL_GetVideoSurface());
     }
 }
 
-void afficheImgSaisie (int life, int score){
-
+void afficheImgSaisie(int life, int score) {
     Joueur joueur;
     joueur.score = score;
 
@@ -59,10 +57,13 @@ void afficheImgSaisie (int life, int score){
 
 }
 
-void afficheTexte (Joueur joueur, int nb){
-
-    int b =0;
+void afficheTexte(Joueur joueur, int nb) {
+    int b = 0;
     b = joueur.pseudo[nb -1] - 97; // 97 est le code de 'a'
+
+    if(b < 0) {
+        return 0;
+    }
 
     SDL_Rect position;
 
@@ -100,65 +101,130 @@ void afficheTexte (Joueur joueur, int nb){
     imglettre[25] = SDL_LoadBMP("images/lettres/z.bmp");
 
     SDL_BlitSurface(imglettre[b], NULL, SDL_GetVideoSurface(), &position);
-
 }
 
-void initListe(Liste* maListe){
-    *maListe = NULL;
-}
+cellule* creerCellule(Joueur *player, int nbClass) {
+    player->classement = nbClass;
 
-Liste creerCellule(Joueur *player, int i){
-    Liste cell;
-    cell = (Liste) malloc(sizeof(cellule));
+    cellule* nouvelleCellule = malloc(sizeof(cellule));
+
+    nouvelleCellule->joueur = player;
+
+    return nouvelleCellule;
+
+    /*liste cell;
+    cell = (liste) malloc(sizeof(cellule));
     cell->joueur = player;
     cell->joueur->score = player->score;
     cell->nxt = NULL;
     cell->joueur->classement = i;
-    return cell;
+    return cell;*/
 }
 
-int estVide(Liste maListe){
-	return maListe==NULL;
+int estVide(liste classement) {
+	return classement==NULL;
 }
 
-void ajouteEnTete(Liste* maListe,Joueur *player){
-    Liste uneListe = creerCellule(player, 1);
-    uneListe->nxt = *maListe;
-    *maListe = uneListe;
+liste ajouteEnTete(liste classement, Joueur *player) {
+    //cellule* nouvelleCellule = creerCellule(player, 1);
+    player->classement = 1;
+
+    cellule* nouvelleCellule = malloc(sizeof(cellule));
+
+    nouvelleCellule->joueur = player;
+    nouvelleCellule->nxt = classement;
+
+    return nouvelleCellule;
 }
 
-void insere(Liste* maListe,Joueur* player){
-    Liste uneListe, aux;
-    int i = 0;
-    uneListe = *maListe;
-        if((estVide(uneListe))||(uneListe->joueur->score < player->score)){
-            ajouteEnTete(maListe, player);
-        }else{
-            //Je ne suis pas
-            while((uneListe->nxt!=NULL) && (uneListe->nxt->joueur->score < player->score)){
-                    uneListe  = uneListe->nxt;
-                    i++;
-            }
-            aux = creerCellule(player, i);
-            aux->nxt = uneListe->nxt;
-            uneListe->nxt = aux;
+liste ajouteEnFin(liste classement, Joueur *player) {
+    //cellule* nouvelleCellule = creerCellule(player, 2);
+    player->classement = 2;
+
+    cellule* nouvelleCellule = malloc(sizeof(cellule));
+
+    nouvelleCellule->joueur = player;
+    nouvelleCellule->nxt = NULL;
+
+    if(classement == NULL) {
+        return nouvelleCellule;
+    } else {
+        cellule* temp = classement;
+
+        while(temp->nxt != NULL) {
+            temp = temp->nxt;
         }
+
+        temp->nxt = nouvelleCellule;
+
+        return classement;
+    }
 }
 
-void affiche(){
-    Liste maListe;
-    char a;
-    (maListe->joueur)->pseudo[1] = a;
-    Joueur* test = maListe->joueur;
-    int i = 1;
-    if(!estVide(maListe)){
-        while (maListe != NULL){
-            for(i = 0; i<TAILLE_MAX_PSEUDO; i++){
-                //Probleme ici, afficheTexte, veux un joueur, mais maliste.joueur c'est un *Joueur ...
-                afficheTexte(*test, i);
-            }
-            maListe = maListe->nxt;
-            }
+void insere(liste classement, Joueur* player) {
+    liste aux;
+    int i = 0;
+
+    /*if((estVide(classement))||(classement->joueur->score < player->score)){
+        ajouteEnTete(classement, player);
+    } else {
+        //Je ne suis pas
+        while((classement->nxt!=NULL) && (classement->nxt->joueur->score < player->score)){
+                classement  = classement->nxt;
+                i++;
+        }
+        aux = creerCellule(player, i);
+        aux->nxt = classement->nxt;
+        classement->nxt = aux;
+    }*/
+}
+
+void affiche() {
+    liste classement = NULL;
+
+    Joueur joueurTest;
+    joueurTest.pseudo[0] = 'a';
+    joueurTest.pseudo[1] = 'b';
+    joueurTest.score = 50;
+
+    Joueur joueurTest2;
+    joueurTest2.pseudo[0] = 'c';
+    joueurTest2.pseudo[1] = 'd';
+    joueurTest2.score = 60;
+
+    classement = ajouteEnTete(classement, &joueurTest);
+    classement = ajouteEnFin(classement, &joueurTest2);
+
+    int i=0;
+    cellule *uneCellule = classement;
+    Joueur joueurAAfficher;
+
+    while(!estVide(uneCellule)) {
+        joueurAAfficher = *(uneCellule->joueur);
+
+        for(i=0; i<TAILLE_MAX_PSEUDO; i++) {
+            afficheTexte(joueurAAfficher, (i+1));
+        }
+
+        uneCellule = uneCellule->nxt;
     }
+
+    SDL_Flip(SDL_GetVideoSurface());
+
+    /*char a;
+    (classement->joueur)->pseudo[1] = a;*/
+    /*Joueur test = classement->joueur;
+    int i = 1;
+
+    if(!estVide(classement)){
+        while (classement != NULL){
+            for(i = 0; i<TAILLE_MAX_PSEUDO; i++){
+                //Probleme ici, afficheTexte, veux un joueur, mais classement.joueur c'est un *Joueur ...
+                //afficheTexte(*test, i);
+            }
+
+            classement = classement->nxt;
+        }
+    }*/
 }
 

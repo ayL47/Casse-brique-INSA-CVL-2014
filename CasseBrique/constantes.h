@@ -28,12 +28,12 @@ typedef struct{
         int classement;
 }Joueur;
 
-typedef struct cellule cellule ;
-struct cellule{
+typedef struct cellule cellule;
+struct cellule {
     Joueur* joueur;
-    struct cellule* nxt;
+    struct cellule *nxt;
 };
 
-typedef cellule* Liste;
+typedef cellule* liste;
 
 #endif // CONSTANTES_H_INCLUDED
