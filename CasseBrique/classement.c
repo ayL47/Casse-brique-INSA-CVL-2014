@@ -61,7 +61,7 @@ void afficheImgSaisie (int life, int score){
 
 void afficheTexte (Joueur joueur, int nb){
 
-    int i = 0, b =0;
+    int b =0;
     b = joueur.pseudo[nb -1] - 97; // 97 est le code de 'a'
 
     SDL_Rect position;
@@ -103,4 +103,58 @@ void afficheTexte (Joueur joueur, int nb){
 
 }
 
+void initListe(Liste* maListe){
+    *maListe = NULL;
+}
+
+Liste creerCellule(Joueur *player, int i){
+    Liste cell;
+    cell = (Liste) malloc(sizeof(cellule));
+    cell->joueur = player;
+    cell->joueur->score = player->score;
+    cell->nxt = NULL;
+    cell->joueur->classement = i;
+    return cell;
+}
+
+int estVide(Liste maListe){
+	return maListe==NULL;
+}
+
+void ajouteEnTete(Liste* maListe,Joueur *player){
+    Liste uneListe = creerCellule(player, 1);
+    uneListe->nxt = *maListe;
+    *maListe = uneListe;
+}
+
+void insere(Liste* maListe,Joueur* player){
+    Liste uneListe, aux;
+    int i = 0;
+    uneListe = *maListe;
+        if((estVide(uneListe))||(uneListe->joueur->score < player->score)){
+            ajouteEnTete(maListe, player);
+        }else{
+            //Je ne suis pas
+            while((uneListe->nxt!=NULL) && (uneListe->nxt->joueur->score < player->score)){
+                    uneListe  = uneListe->nxt;
+                    i++;
+            }
+            aux = creerCellule(player, i);
+            aux->nxt = uneListe->nxt;
+            uneListe->nxt = aux;
+        }
+}
+
+void affiche(Liste maListe){
+    int i = 0;
+    if(!estVide(maListe)){
+        while (maListe != NULL){
+            for(i = 0; i<TAILLE_MAX_PSEUDO; i++){
+                //Probleme ici, afficheTexte, veux un joueur, mais maliste.joueur c'est un *Joueur ...
+                afficheTexte(maListe.joueur, i);
+            }
+            maListe = maListe->nxt;
+            }
+    }
+}
 

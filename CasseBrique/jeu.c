@@ -14,7 +14,7 @@ void boucleJeu(SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, S
     Ball ball;
     int continuer = 1, briquesRestantes = 0, i = 0, j = 0, jeu = 0, initLevel = 0;
     int debut = 0;
-    int life = 1, newgame = 0;
+    int life = 3, newgame = 0;
     int level = 1;
     int score = 0;
 
