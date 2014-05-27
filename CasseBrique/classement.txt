@@ -1,0 +1,1 @@
+500,Toto;128,Titi;52,Tata
