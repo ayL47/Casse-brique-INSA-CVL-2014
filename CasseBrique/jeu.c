@@ -12,7 +12,7 @@ void boucleJeu(SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, S
     SDL_Event event;
 
     Ball ball;
-    int continuer = 1, briquesRestantes = 0, i = 0, j = 0, jeu = 0, initLevel = 0;
+    int continuer = 1, briquesRestantes = 0, i = 0, j = 0, jeu = 0, initLevel = 0, gagner = 0;
     int debut = 0;
     int life = 3, newgame = 0;
     int level = 1;
@@ -38,6 +38,8 @@ void boucleJeu(SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, S
             positionBalle.x = (positionBarre.x + 25);
             positionBalle.y = (positionBarre.y - 25 - 1); // -1 Pour ne pas mettre la balle pile sur la barre
             initLevel = 1;
+
+            gagner = 0;
         }
 
         SDL_FillRect(SDL_GetVideoSurface(), NULL, SDL_MapRGB(SDL_GetVideoSurface()->format, 0, 0, 0));
@@ -165,9 +167,10 @@ void boucleJeu(SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, S
             } else if(briquesRestantes == 0) {
                 // Toutes les briques sont cassées
                 // Afficher gagner et aller au niveau suivant
-                int i = 1;
+                i = 1;
                 afficheWin();
                 SDL_Flip(SDL_GetVideoSurface());
+
                 while(i){
                     SDL_WaitEvent(&event);
                     switch(event.type) {
@@ -194,13 +197,19 @@ void boucleJeu(SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, S
                         break;
                     }
                 }
+
                 level++;
 
-                loadLevel(mapLevel, level, &briquesRestantes);
+                if(level <= LEVEL_MAX) {
+                    loadLevel(mapLevel, level, &briquesRestantes);
 
-                jeu = 0;
-                initLevel = 0;
-                life = life +3;
+                    jeu = 0;
+                    initLevel = 0;
+                    life = life +3;
+                } else {
+                    continuer = 0;
+                    gagner = 1;
+                }
             }
 
             //Si une vie a été perdue
@@ -219,21 +228,65 @@ void boucleJeu(SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, S
                 // Afficher écran perdu
                 afficheLoose();
                 SDL_Flip(SDL_GetVideoSurface());
-                while(continuer){
+                i = 1;
+
+                while(i){
                     SDL_WaitEvent(&event);
                     switch(event.type) {
                         case SDL_QUIT:
+                            i = 0;
                             continuer = 0;
                         break;
 
                         case SDL_KEYDOWN:
                             switch(event.key.keysym.sym) {
                                 case SDLK_RETURN:
-                                    afficheImgSaisie(life, score);
+                                    afficheImgSaisie(score);
+
+                                    i = 0;
                                     continuer = 0;
                                 break;
 
                                 case SDLK_ESCAPE:
+                                    i = 0;
+                                    continuer = 0;
+                                break;
+
+                                default:
+                                break;
+                            }
+                        break;
+
+                        default:
+                        break;
+                    }
+                }
+            }
+
+            if(gagner == 1) {
+                // Afficher écran de saisie du pseudo
+                i = 1;
+
+                while(i){
+                    SDL_WaitEvent(&event);
+
+                    switch(event.type) {
+                        case SDL_QUIT:
+                            i = 0;
+                            continuer = 0;
+                        break;
+
+                        case SDL_KEYDOWN:
+                            switch(event.key.keysym.sym) {
+                                case SDLK_RETURN:
+                                    afficheImgSaisie(score);
+
+                                    i = 0;
+                                    continuer = 0;
+                                break;
+
+                                case SDLK_ESCAPE:
+                                    i = 0;
                                     continuer = 0;
                                 break;
 
