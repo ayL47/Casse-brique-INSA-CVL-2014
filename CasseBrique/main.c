@@ -12,8 +12,9 @@ int main(int argc, char *argv[]) {
     SDL_SetVideoMode(LARGEUR_FENETRE, HAUTEUR_FENETRE, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
     SDL_WM_SetCaption(":: Casse-briques ::", NULL);
 
+    liste classement = NULL;
     // Affichage du menu
-    initMenu();
+    initMenu(classement);
 
     // Fermeture SDL
     close();

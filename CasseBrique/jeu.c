@@ -7,7 +7,7 @@
 #include "constantes.h"
 #include "move.h"
 
-void boucleJeu(SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_Surface *mur, SDL_Surface *vide, int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR], SDL_Surface **imgchiffre) {
+int boucleJeu(SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_Surface *mur, SDL_Surface *vide, int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR], SDL_Surface **imgchiffre) {
     SDL_Rect position, positionBalle, positionBarre;
     SDL_Event event;
 
@@ -241,8 +241,6 @@ void boucleJeu(SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, S
                         case SDL_KEYDOWN:
                             switch(event.key.keysym.sym) {
                                 case SDLK_RETURN:
-                                    afficheImgSaisie(score);
-
                                     i = 0;
                                     continuer = 0;
                                 break;
@@ -279,8 +277,6 @@ void boucleJeu(SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, S
                         case SDL_KEYDOWN:
                             switch(event.key.keysym.sym) {
                                 case SDLK_RETURN:
-                                    afficheImgSaisie(score);
-
                                     i = 0;
                                     continuer = 0;
                                 break;
@@ -302,9 +298,10 @@ void boucleJeu(SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, S
             }
         }
     }
+    return score;
 }
 
-void play() {
+void play(liste classement) {
     int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR] = {{0}};
 
     SDL_Surface *balle = NULL;
@@ -357,7 +354,10 @@ void play() {
     SDL_SetColorKey(imgchiffre[11], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[11]->format, 0, 0, 0));*/
 
     // Appel de la boucle de jeu
-    boucleJeu(briqueVie, balle, barre, brique, mur, vide, mapLevel, imgchiffre);
+    int score = boucleJeu(briqueVie, balle, barre, brique, mur, vide, mapLevel, imgchiffre);
+
+    //Ajout au classement
+    ajoutClassement(classement, score);
 
     // Libération mémoire
     SDL_FreeSurface(balle);

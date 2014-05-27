@@ -3,7 +3,7 @@
 #include "menu.h"
 #include "constantes.h"
 
-void initMenu() {
+void initMenu(liste classement) {
     SDL_Surface *buttonPlay = NULL;
     SDL_Surface *buttonIns = NULL;
     SDL_Surface *instructions = NULL;
@@ -22,7 +22,7 @@ void initMenu() {
     buttonBack = SDL_LoadBMP("images/boutonR_pas_survole.bmp");
     menuImg = SDL_LoadBMP("images/menu.bmp");
 
-    menu(buttonPlay, buttonIns, instructions, buttonRank, rank, buttonQuit, buttonBack, menuImg);
+    menu(classement, buttonPlay, buttonIns, instructions, buttonRank, rank, buttonQuit, buttonBack, menuImg);
 
     // Libère les surface
     SDL_FreeSurface(buttonPlay);
@@ -34,7 +34,7 @@ void initMenu() {
     SDL_FreeSurface(buttonBack);
 }
 
-void menu(SDL_Surface *buttonPlay, SDL_Surface *buttonIns, SDL_Surface *instructions, SDL_Surface *buttonRank, SDL_Surface *rank, SDL_Surface *buttonQuit, SDL_Surface *buttonBack, SDL_Surface *menu) {
+void menu(liste classement, SDL_Surface *buttonPlay, SDL_Surface *buttonIns, SDL_Surface *instructions, SDL_Surface *buttonRank, SDL_Surface *rank, SDL_Surface *buttonQuit, SDL_Surface *buttonBack, SDL_Surface *menu) {
     int continuer = 1;
     SDL_Event event;
 
@@ -73,7 +73,7 @@ void menu(SDL_Surface *buttonPlay, SDL_Surface *buttonIns, SDL_Surface *instruct
             case SDL_MOUSEBUTTONUP:
                 if(event.button.x>=positionButtonPlay.x && event.button.x<=positionButtonPlay.x+233 && event.button.y>=positionButtonPlay.y && event.button.y<=positionButtonPlay.y+37) {
                     // Si souris sur bouton jouer
-                    play();
+                    play(classement);
 
                     SDL_BlitSurface(menu, NULL, SDL_GetVideoSurface(), &position);
                     SDL_BlitSurface(buttonPlay, NULL, SDL_GetVideoSurface(), &positionButtonPlay);
@@ -95,7 +95,7 @@ void menu(SDL_Surface *buttonPlay, SDL_Surface *buttonIns, SDL_Surface *instruct
                     SDL_Flip(SDL_GetVideoSurface());
                 } else if(event.button.x>=positionButtonRank.x && event.button.x<=positionButtonRank.x+233 && event.button.y>=positionButtonRank.y && event.button.y<=positionButtonRank.y+37) {
                     // Si souris sur bouton scores
-                    score(rank, position, buttonBack, positionButtonBack);
+                    score(classement, rank, position, buttonBack, positionButtonBack);
 
                     SDL_BlitSurface(menu, NULL, SDL_GetVideoSurface(), &position);
                     SDL_BlitSurface(buttonPlay, NULL, SDL_GetVideoSurface(), &positionButtonPlay);
@@ -150,7 +150,7 @@ void instruction(SDL_Surface *instructions, SDL_Rect position, SDL_Surface *butt
     }
 }
 
-void score(SDL_Surface *rank, SDL_Rect position, SDL_Surface *buttonBack, SDL_Rect positionButtonBack) {
+void score(liste classement, SDL_Surface *rank, SDL_Rect position, SDL_Surface *buttonBack, SDL_Rect positionButtonBack) {
     int continuer = 1;
     SDL_Event event;
 
@@ -158,7 +158,6 @@ void score(SDL_Surface *rank, SDL_Rect position, SDL_Surface *buttonBack, SDL_Re
     SDL_BlitSurface(buttonBack, NULL, SDL_GetVideoSurface(), &positionButtonBack);
     SDL_Flip(SDL_GetVideoSurface());
 
-    liste classement;
     affiche(classement);
 
     while(continuer) {

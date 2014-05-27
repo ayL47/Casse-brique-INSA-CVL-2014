@@ -99,23 +99,13 @@ void afficheTexte(SDL_Rect position, int unicodevalue) {
     SDL_BlitSurface(imglettre[lettre], NULL, SDL_GetVideoSurface(), &position);
 }
 
-cellule* creerCellule(Joueur *player, int nbClass) {
-    player->classement = nbClass;
 
-    cellule* nouvelleCellule = malloc(sizeof(cellule));
-
-    nouvelleCellule->joueur = player;
-
-    return nouvelleCellule;
-
-}
 
 int estVide(liste classement) {
 	return classement==NULL;
 }
 
 liste ajouteEnTete(liste classement, Joueur *player) {
-    //cellule* nouvelleCellule = creerCellule(player, 1);
     player->classement = 1;
 
     cellule* nouvelleCellule = malloc(sizeof(cellule));
@@ -127,7 +117,6 @@ liste ajouteEnTete(liste classement, Joueur *player) {
 }
 
 liste ajouteEnFin(liste classement, Joueur *player) {
-    //cellule* nouvelleCellule = creerCellule(player, 2);
     player->classement = 2;
 
     cellule* nouvelleCellule = malloc(sizeof(cellule));
@@ -150,26 +139,37 @@ liste ajouteEnFin(liste classement, Joueur *player) {
     }
 }
 
-void insere(liste classement, Joueur* player) {
-    liste aux;
+void ajoutEnPosition(liste classement, Joueur* player, int position) {
     int i = 0;
 
-    /*if((estVide(classement))||(classement->joueur->score < player->score)){
-        ajouteEnTete(classement, player);
-    } else {
-        //Je ne suis pas
-        while((classement->nxt!=NULL) && (classement->nxt->joueur->score < player->score)){
-                classement  = classement->nxt;
-                i++;
-        }
-        aux = creerCellule(player, i);
-        aux->nxt = classement->nxt;
-        classement->nxt = aux;
-    }*/
+    player->classement = position;
+
+    cellule* nouvelleCellule = malloc(sizeof(cellule));
+
+    nouvelleCellule->joueur = player;
+    nouvelleCellule->nxt = classement->nxt;
+    classement->nxt = nouvelleCellule;
+
+    return nouvelleCellule;
 }
 
-void affiche(liste classement) {
+void insere(liste classement, Joueur* player)
+{
+    cellule *tmp = classement;
+    if((estVide(classement))||(classement->joueur->score < player->score)){
+            ajouteEnTete(classement, player);
+        } else {
+            //Je ne suis pas
+            while((tmp->nxt!=NULL) && (tmp->nxt->joueur->score < player->score)){
+                    tmp = tmp->next;
+                    i++;
+            }
+        }
+    return i;
+}
 
+
+void affiche(liste classement) {
     SDL_Rect positionLettre;
 
     int position = 0;
@@ -198,15 +198,25 @@ void affiche(liste classement) {
         joueurAAfficher = *(uneCellule->joueur);
 
         while(classement->joueur->pseudo[position] != '\0') {
-            positionLettre.x+10;
             afficheTexte(positionLettre, classement->joueur->pseudo[position]);
             position++;
+            positionLettre.x+10;
         }
-        positionLettre.y+10;
         uneCellule = uneCellule->nxt; // une ligne de mon classement
+        positionLettre.y+10;
     }
 
     SDL_Flip(SDL_GetVideoSurface());
+
+
+}
+
+void ajoutClassement(liste classement, int score){
+
+    classement.joueur.score = score;
+    afficheImgSaisie(score);
+
+
 
 
 }
