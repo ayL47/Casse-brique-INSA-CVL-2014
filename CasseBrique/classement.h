@@ -2,8 +2,8 @@
 #define CLASSEMENT_H_INCLUDED
 
 void saisieTexte(Joueur *joueur);
-void afficheImgSaisie(int life, int score);
-void afficheTexte(Joueur joueur,int nb);
+void afficheImgSaisie(int score);
+void afficheTexte(SDL_Rect position, int unicodevalue);
 
 cellule* creerCellule(Joueur *player, int nbClass);
 int estVide(liste classement);

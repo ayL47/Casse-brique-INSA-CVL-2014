@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include "menu.h"
+#include "constantes.h"
 
 void initMenu() {
     SDL_Surface *buttonPlay = NULL;
@@ -157,7 +158,8 @@ void score(SDL_Surface *rank, SDL_Rect position, SDL_Surface *buttonBack, SDL_Re
     SDL_BlitSurface(buttonBack, NULL, SDL_GetVideoSurface(), &positionButtonBack);
     SDL_Flip(SDL_GetVideoSurface());
 
-    affiche();
+    liste classement;
+    affiche(classement);
 
     while(continuer) {
         SDL_WaitEvent(&event);

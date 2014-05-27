@@ -13,7 +13,10 @@ void saisieTexte(Joueur *joueur) {
     SDL_EnableUNICODE(1);
 
     int position = 0, continuerSaisie = 1;
-    int nb = 0;
+
+    SDL_Rect positionT;
+    positionT.x = 200;
+    positionT.y = 200;
 
     while(continuerSaisie) {
         SDL_WaitEvent(&eventSaisie);
@@ -26,10 +29,9 @@ void saisieTexte(Joueur *joueur) {
                 continuerSaisie = 0;
             } else if(((eventSaisie.key.keysym.unicode & 0xFF00) == 0x0000) && (position + 1 < TAILLE_MAX_PSEUDO) ) {
                 joueur->pseudo[position] = eventSaisie.key.keysym.unicode;
-                position++;
                 joueur->pseudo[position] = '\0';
-                nb++;
-                afficheTexte(*joueur, nb);
+                afficheTexte(positionT, joueur->pseudo[position]);
+                position++;
             }
         }
 
@@ -37,7 +39,7 @@ void saisieTexte(Joueur *joueur) {
     }
 }
 
-void afficheImgSaisie(int life, int score) {
+void afficheImgSaisie(int score) {
     Joueur joueur;
     joueur.score = score;
 
@@ -57,18 +59,12 @@ void afficheImgSaisie(int life, int score) {
 
 }
 
-void afficheTexte(Joueur joueur, int nb) {
-    int b = 0;
-    b = joueur.pseudo[nb -1] - 97; // 97 est le code de 'a'
+void afficheTexte(SDL_Rect position, int unicodevalue) {
+    int lettre = unicodevalue - 97;
 
-    if(b < 0) {
+    if(lettre < 0) {
         return 0;
     }
-
-    SDL_Rect position;
-
-    position.x = 80 + nb*10;
-    position.y = 170;
 
     SDL_Surface **imglettre;
     imglettre = (SDL_Surface**)malloc(sizeof(SDL_Surface*)*26);
@@ -100,7 +96,7 @@ void afficheTexte(Joueur joueur, int nb) {
     imglettre[24] = SDL_LoadBMP("images/lettres/y.bmp");
     imglettre[25] = SDL_LoadBMP("images/lettres/z.bmp");
 
-    SDL_BlitSurface(imglettre[b], NULL, SDL_GetVideoSurface(), &position);
+    SDL_BlitSurface(imglettre[lettre], NULL, SDL_GetVideoSurface(), &position);
 }
 
 cellule* creerCellule(Joueur *player, int nbClass) {
@@ -112,13 +108,6 @@ cellule* creerCellule(Joueur *player, int nbClass) {
 
     return nouvelleCellule;
 
-    /*liste cell;
-    cell = (liste) malloc(sizeof(cellule));
-    cell->joueur = player;
-    cell->joueur->score = player->score;
-    cell->nxt = NULL;
-    cell->joueur->classement = i;
-    return cell;*/
 }
 
 int estVide(liste classement) {
@@ -179,8 +168,14 @@ void insere(liste classement, Joueur* player) {
     }*/
 }
 
-void affiche() {
-    liste classement = NULL;
+void affiche(liste classement) {
+
+    SDL_Rect positionLettre;
+
+    int position = 0;
+
+    positionLettre.x = 80;
+    positionLettre.y = 250;
 
     Joueur joueurTest;
     joueurTest.pseudo[0] = 'a';
@@ -195,36 +190,24 @@ void affiche() {
     classement = ajouteEnTete(classement, &joueurTest);
     classement = ajouteEnFin(classement, &joueurTest2);
 
-    int i=0;
+
     cellule *uneCellule = classement;
     Joueur joueurAAfficher;
 
     while(!estVide(uneCellule)) {
         joueurAAfficher = *(uneCellule->joueur);
 
-        for(i=0; i<TAILLE_MAX_PSEUDO; i++) {
-            afficheTexte(joueurAAfficher, (i+1));
+        while(classement->joueur->pseudo[position] != '\0') {
+            positionLettre.x+10;
+            afficheTexte(positionLettre, classement->joueur->pseudo[position]);
+            position++;
         }
-
-        uneCellule = uneCellule->nxt;
+        positionLettre.y+10;
+        uneCellule = uneCellule->nxt; // une ligne de mon classement
     }
 
     SDL_Flip(SDL_GetVideoSurface());
 
-    /*char a;
-    (classement->joueur)->pseudo[1] = a;*/
-    /*Joueur test = classement->joueur;
-    int i = 1;
 
-    if(!estVide(classement)){
-        while (classement != NULL){
-            for(i = 0; i<TAILLE_MAX_PSEUDO; i++){
-                //Probleme ici, afficheTexte, veux un joueur, mais classement.joueur c'est un *Joueur ...
-                //afficheTexte(*test, i);
-            }
-
-            classement = classement->nxt;
-        }
-    }*/
 }
 
