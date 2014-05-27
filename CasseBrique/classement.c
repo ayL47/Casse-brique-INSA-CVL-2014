@@ -145,13 +145,17 @@ void insere(Liste* maListe,Joueur* player){
         }
 }
 
-void affiche(Liste maListe){
-    int i = 0;
+void affiche(){
+    Liste maListe;
+    char a;
+    (maListe->joueur)->pseudo[1] = a;
+    Joueur* test = maListe->joueur;
+    int i = 1;
     if(!estVide(maListe)){
         while (maListe != NULL){
             for(i = 0; i<TAILLE_MAX_PSEUDO; i++){
                 //Probleme ici, afficheTexte, veux un joueur, mais maliste.joueur c'est un *Joueur ...
-                afficheTexte(maListe.joueur, i);
+                afficheTexte(*test, i);
             }
             maListe = maListe->nxt;
             }
