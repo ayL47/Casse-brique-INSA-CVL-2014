@@ -2,7 +2,7 @@
 #define CLASSEMENT_H_INCLUDED
 
 void saisieTexte(Joueur *joueur);
-void afficheImgSaisie(int score);
+void afficheImgSaisie(Joueur *joueur);
 void afficheTexte(SDL_Rect position, int unicodevalue);
 
 cellule* creerCellule(Joueur *player, int nbClass);

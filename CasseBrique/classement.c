@@ -8,7 +8,7 @@
 #include <math.h>
 #include "classement.h"
 
-void saisieTexte(Joueur *joueur) {
+void saisieTexte(Joueur *joueur){
     SDL_Event eventSaisie;
     SDL_EnableUNICODE(1);
 
@@ -30,7 +30,7 @@ void saisieTexte(Joueur *joueur) {
             } else if(((eventSaisie.key.keysym.unicode & 0xFF00) == 0x0000) && (position + 1 < TAILLE_MAX_PSEUDO) ) {
                 joueur->pseudo[position] = eventSaisie.key.keysym.unicode;
                 joueur->pseudo[position] = '\0';
-                afficheTexte(positionT, joueur->pseudo[position]);
+                afficheTexte(positionT, classement->joueur->pseudo[position]);
                 position++;
             }
         }
@@ -39,9 +39,7 @@ void saisieTexte(Joueur *joueur) {
     }
 }
 
-void afficheImgSaisie(int score) {
-    Joueur joueur;
-    joueur.score = score;
+void afficheImgSaisie(Joueur *joueur) {
 
     SDL_Surface *saisie = NULL;
 
@@ -135,7 +133,7 @@ liste ajouteEnFin(liste classement, Joueur *player) {
 
         temp->nxt = nouvelleCellule;
 
-        return classement;
+        return nouvelleCellule;
     }
 }
 
@@ -212,12 +210,10 @@ void affiche(liste classement) {
 }
 
 void ajoutClassement(liste classement, int score){
-
-    classement.joueur.score = score;
-    afficheImgSaisie(score);
-
-
-
-
+    int position;
+    Joueur* player;
+    joueur->score = score;
+    afficheImgSaisie(&player);
+    position = insere(classement, &player);
 }
 
