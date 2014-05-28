@@ -152,7 +152,7 @@ liste ajoutEnPosition(liste classement, Joueur* player, int position) {
     nouvelleCellule->nxt = classement->nxt;
     classement->nxt = nouvelleCellule;
 
-    return nouvelleCellule;
+    //return nouvelleCellule;
 }
 
 int insere(liste classement, Joueur *player){
@@ -166,7 +166,7 @@ int insere(liste classement, Joueur *player){
 }
 
 
-/*void afficheClassement(liste classement) {
+void afficheClassement(liste classement) {
     SDL_Rect positionLettre;
 
     int position = 0;
@@ -206,7 +206,7 @@ int insere(liste classement, Joueur *player){
     SDL_Flip(SDL_GetVideoSurface());
 
 
-}*/
+}
 
 void ajoutClassement(liste classement, Joueur *joueur){
     int position;
@@ -215,7 +215,7 @@ void ajoutClassement(liste classement, Joueur *joueur){
         classement = ajouteEnTete(classement, joueur);
     }
     else{
-        classement = ajoutEnPosition(classement, joueur, position);
+        ajoutEnPosition(&classement, joueur, position);
     }
 
    // afficheClassement(classement);
