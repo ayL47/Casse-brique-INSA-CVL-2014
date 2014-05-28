@@ -10,7 +10,7 @@
 #define TAILLE_MAX_PSEUDO   20
 #define LEVEL_MAX   2
 
-enum {MUR, BRIQUE, VIDE, BRIQUEVIE};
+enum {MUR, BRIQUE, VIDE, BRIQUEVIE, BRIQUEDOUBLE};
 enum {GAUCHE, DROITE};
 
 /*typedef struct        /* Gestion des événements

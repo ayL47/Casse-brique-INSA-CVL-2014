@@ -13,6 +13,24 @@ int main(int argc, char *argv[]) {
     SDL_WM_SetCaption(":: Casse-briques ::", NULL);
 
     liste classement = NULL;
+    //test d'ajout classement
+
+    /*Joueur *joueurTest;
+    joueurTest->pseudo[0] = 'a';
+    joueurTest->pseudo[1] = 'b';
+    joueurTest->score = 50;
+    joueurTest->classement = 1;
+
+    Joueur *joueurTest2;
+    joueurTest2->pseudo[0] = 'c';
+    joueurTest2->pseudo[1] = 'd';
+    joueurTest2->score = 60;
+    joueurTest2->classement = 3;
+
+
+    ajoutClassement(classement, joueurTest);
+    ajoutClassement(classement, joueurTest2);
+    saveClassement(classement);*/
     // Affichage du menu
     initMenu(classement);
 

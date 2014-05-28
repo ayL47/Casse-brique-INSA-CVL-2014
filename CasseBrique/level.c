@@ -85,7 +85,7 @@ int loadLevel(int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR], int level, int *
 
                 mapLevel[i][j] = valueBlock;
 
-                if(valueBlock == 1 || valueBlock == 3) {
+                if(valueBlock == 1 || valueBlock ==3 ) {
                     (*briquesRestantes)++;
                 }
             }
@@ -122,7 +122,7 @@ int loadLevel(int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR], int level, int *
 
                 mapLevel[i][j] = valueBlock;
 
-                if(valueBlock == 1 || valueBlock == 3) {
+                if(valueBlock == 1) {
                     (*briquesRestantes)++;
                 }
             }

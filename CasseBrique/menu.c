@@ -158,7 +158,7 @@ void score(liste classement, SDL_Surface *rank, SDL_Rect position, SDL_Surface *
     SDL_BlitSurface(buttonBack, NULL, SDL_GetVideoSurface(), &positionButtonBack);
     SDL_Flip(SDL_GetVideoSurface());
 
-    affiche(classement);
+    //affiche(classement);
 
     while(continuer) {
         SDL_WaitEvent(&event);

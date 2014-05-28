@@ -7,14 +7,14 @@
 #include "constantes.h"
 #include "move.h"
 
-int boucleJeu(SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_Surface *mur, SDL_Surface *vide, int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR], SDL_Surface **imgchiffre) {
+int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_Surface *mur, SDL_Surface *vide, int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR], SDL_Surface **imgchiffre) {
     SDL_Rect position, positionBalle, positionBarre;
     SDL_Event event;
 
     Ball ball;
     int continuer = 1, briquesRestantes = 0, i = 0, j = 0, jeu = 0, initLevel = 0, gagner = 0;
     int debut = 0;
-    int life = 3, newgame = 0;
+    int life = 1, newgame = 0;
     int level = 1;
     int score = 0;
 
@@ -68,6 +68,9 @@ int boucleJeu(SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, SD
                     case BRIQUEVIE:
                         SDL_BlitSurface(briqueVie, NULL, SDL_GetVideoSurface(), &position);
                         break;
+
+                    case BRIQUEDOUBLE:
+                        SDL_BlitSurface(briqueDouble, NULL, SDL_GetVideoSurface(), &position);
 
                     default:
                         break;
@@ -258,6 +261,7 @@ int boucleJeu(SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, SD
                         default:
                         break;
                     }
+
                 }
             }
 
@@ -303,7 +307,7 @@ int boucleJeu(SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, SD
 
 void play(liste classement) {
     int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR] = {{0}};
-
+    Joueur *joueur;
     SDL_Surface *balle = NULL;
     SDL_Surface *barre = NULL;
     SDL_Surface *brique = NULL;
@@ -311,6 +315,7 @@ void play(liste classement) {
     SDL_Surface *vide = NULL;
     SDL_Surface *Life = NULL;
     SDL_Surface *briqueVie = NULL;
+    SDL_Surface *briqueDouble = NULL;
 
     balle = SDL_LoadBMP("images/balle.bmp");
     barre = SDL_LoadBMP("images/barre.bmp");
@@ -318,6 +323,7 @@ void play(liste classement) {
     mur = SDL_LoadBMP("images/mur.bmp");
     vide = SDL_LoadBMP("images/fond.bmp");
     briqueVie = SDL_LoadBMP("images/briqueVie.bmp");
+    briqueDouble = SDL_LoadBMP("images/briquedouble.bmp");
 
     /**
     * Initialisation du tableau des images des chiffres et score et vie
@@ -338,26 +344,19 @@ void play(liste classement) {
     imgchiffre[10] = SDL_LoadBMP("images/score.bmp");
     imgchiffre[11] = SDL_LoadBMP("images/Vies.bmp");
 
-    // Transparence des chiffres
-    /*SDL_SetColorKey(imgchiffre[0], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[0]->format, 0, 0, 0));
-    SDL_SetColorKey(imgchiffre[1], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[1]->format, 0, 0, 0));
-    SDL_SetColorKey(imgchiffre[2], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[2]->format, 0, 0, 0));
-    SDL_SetColorKey(imgchiffre[3], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[3]->format, 0, 0, 0));
-    SDL_SetColorKey(imgchiffre[4], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[4]->format, 0, 0, 0));
-    SDL_SetColorKey(imgchiffre[5], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[5]->format, 0, 0, 0));
-    SDL_SetColorKey(imgchiffre[6], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[6]->format, 0, 0, 0));
-    SDL_SetColorKey(imgchiffre[7], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[7]->format, 0, 0, 0));
-    SDL_SetColorKey(imgchiffre[8], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[8]->format, 0, 0, 0));
-    SDL_SetColorKey(imgchiffre[9], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[9]->format, 0, 0, 0));
-
-    SDL_SetColorKey(imgchiffre[10], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[10]->format, 0, 0, 0));
-    SDL_SetColorKey(imgchiffre[11], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[11]->format, 0, 0, 0));*/
 
     // Appel de la boucle de jeu
-    int score = boucleJeu(briqueVie, balle, barre, brique, mur, vide, mapLevel, imgchiffre);
+    int score = boucleJeu(briqueDouble, briqueVie, balle, barre, brique, mur, vide, mapLevel, imgchiffre);
 
-    //Ajout au classement
-    ajoutClassement(classement, score);
+    //Enregistre le joueur
+    afficheImgSaisie(&joueur, score);
+
+
+    //Ajout du joueur au classement
+    //ajoutClassement(classement, &joueur);
+
+    // Sauvegarde du classement
+    saveJoueur(&joueur);
 
     // Libération mémoire
     SDL_FreeSurface(balle);
@@ -366,4 +365,5 @@ void play(liste classement) {
     SDL_FreeSurface(vide);
     SDL_FreeSurface(briqueVie);
     SDL_FreeSurface(*imgchiffre);
+    SDL_FreeSurface(briqueDouble);
 }
