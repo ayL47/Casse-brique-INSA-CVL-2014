@@ -14,8 +14,8 @@ int main(int argc, char *argv[]) {
 
     liste classement = NULL;
     //test d'ajout classement
-
-
+    //afficheClassement(classement);
+    //saveClassement(classement);
     // Affichage du menu
     initMenu(classement);
 
@@ -26,8 +26,6 @@ int main(int argc, char *argv[]) {
 }
 
 void close(void) {
-    // TTF_Quit();
-
     // Fermeture SDL
     SDL_Quit();
 }

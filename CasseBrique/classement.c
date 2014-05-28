@@ -138,11 +138,11 @@ liste ajouteEnFin(liste classement, Joueur *player) {
 
         temp->nxt = nouvelleCellule;
 
-        return nouvelleCellule;
+        return classement;
     }
 }
 
-liste ajoutEnPosition(liste classement, Joueur* player, int position) {
+liste ajoutEnPosition(liste classement, Joueur *player, int position) {
     player->classement = position;
 
     cellule* nouvelleCellule = malloc(sizeof(cellule));
@@ -152,55 +152,79 @@ liste ajoutEnPosition(liste classement, Joueur* player, int position) {
     nouvelleCellule->nxt = classement->nxt;
     classement->nxt = nouvelleCellule;
 
-    //return nouvelleCellule;
+    return nouvelleCellule;
 }
 
 int insere(liste classement, Joueur *player){
     int i = 1;
     cellule *tmp = classement;
-    while((tmp->nxt!=NULL) && (tmp->nxt->joueur->score < player->score)){
-            tmp = tmp->nxt;
-            i++;
-    }
-    return i;
+    if((estVide(classement))||(classement->joueur->score < player->score)){
+            ajouteEnTete(classement, player);
+        } else {
+            //Je ne suis pas
+            while((tmp->nxt!=NULL) && (tmp->nxt->joueur->score < player->score)){
+                    tmp = tmp->nxt;
+                    i++;
+            }
+            ajoutEnPosition(classement, player, i);
+        }
 }
 
 
-void afficheClassement(liste classement) {
-    SDL_Rect positionLettre;
+void afficheClassement(liste classement, SDL_Surface **imgchiffre) {
+    SDL_Rect positionLettre, positionScore, positionClassement;
 
     int position = 0;
 
     positionLettre.x = 80;
     positionLettre.y = 250;
 
-    Joueur *joueurTest;
-    joueurTest->pseudo[0] = 'a';
-    joueurTest->pseudo[1] = 'b';
-    joueurTest->score = 50;
 
-    Joueur *joueurTest2;
-    joueurTest2->pseudo[0] = 'c';
-    joueurTest2->pseudo[1] = 'd';
-    joueurTest2->score = 60;
+
+    Joueur joueurTest;
+    joueurTest.pseudo[0] = 'a';
+    joueurTest.pseudo[1] = 'b';
+    joueurTest.pseudo[2] = 'k';
+    joueurTest.pseudo[3] = 'm';
+    joueurTest.score = 70;
+
+    Joueur joueurTest2;
+    joueurTest2.pseudo[0] = 'u';
+    joueurTest2.pseudo[1] = 'l';
+    joueurTest2.pseudo[2] = 'i';
+    joueurTest2.pseudo[3] = 'p';
+    joueurTest2.score = 60;
+    joueurTest2.classement = 2;
+
+    Joueur joueurTest3;
+    joueurTest3.pseudo[0] = 't';
+    joueurTest3.pseudo[1] = 'u';
+    joueurTest3.pseudo[2] = 't';
+    joueurTest3.pseudo[3] = 'u';
+    joueurTest3.score = 40;
+    joueurTest3.classement = 3;
 
     classement = ajouteEnTete(classement, &joueurTest);
     classement = ajouteEnFin(classement, &joueurTest2);
+    classement = ajouteEnFin(classement, &joueurTest3);
 
 
     cellule *uneCellule = classement;
-    Joueur joueurAAfficher;
-
+    int b = uneCellule->joueur->score;
     while(!estVide(uneCellule)) {
-        joueurAAfficher = *(uneCellule->joueur);
-
-        while(classement->joueur->pseudo[position] != '\0') {
-            afficheTexte(positionLettre, classement->joueur->pseudo[position]);
+        while(uneCellule->joueur->pseudo[position] != '\0' && position < TAILLE_MAX_PSEUDO) {
+            afficheTexte(positionLettre, uneCellule->joueur->pseudo[position]);
+            int *scorejoueur = uneCellule->joueur->score;
+            majScore(&scorejoueur, imgchiffre);
             position++;
             positionLettre.x += 10;
         }
-        uneCellule = uneCellule->nxt; // une ligne de mon classement
-        positionLettre.y += 10;
+        int b = uneCellule->joueur->score;
+        int a = uneCellule->joueur->score;
+        uneCellule = uneCellule->nxt;
+        positionLettre.y += 20;
+        position = 0;
+        positionLettre.x = 80;
     }
 
     SDL_Flip(SDL_GetVideoSurface());
@@ -208,17 +232,10 @@ void afficheClassement(liste classement) {
 
 }
 
-void ajoutClassement(liste classement, Joueur *joueur){
-    int position;
-    position = insere(classement, joueur);
-    if (position = 1){
-        classement = ajouteEnTete(classement, joueur);
-    }
-    else{
-        ajoutEnPosition(&classement, joueur, position);
-    }
 
-   // afficheClassement(classement);
+void ajoutClassement(liste classement, Joueur *joueur){
+
+    classement = insere(classement, joueur);
 }
 
 
@@ -243,31 +260,33 @@ void saveClassement(liste classement){
     char pseudo[TAILLE_MAX_PSEUDO];
     int score = 0, i = 0;
 
-   /* cellule* j2;
+    cellule* j2;
     cellule* j1;
 
-    Joueur *joueurTest;
-    joueurTest->pseudo[0] = 'a';
-    joueurTest->pseudo[1] = 'b';
-    joueurTest->score = 50;
-    joueurTest->classement = 1;
+    Joueur joueurTest;
+    joueurTest.pseudo[0] = 'a';
+    joueurTest.pseudo[1] = 'b';
+    joueurTest.score = 50;
+    joueurTest.classement = 1;
 
-    Joueur *joueurTest2;
-    joueurTest2->pseudo[0] = 'c';
-    joueurTest2->pseudo[1] = 'd';
-    joueurTest2->score = 60;
-    joueurTest2->classement = 3;
+    Joueur joueurTest2;
+    joueurTest2.pseudo[0] = 'e';
+    joueurTest2.pseudo[1] = 'f';
+    joueurTest2.score = 60;
+    joueurTest2.classement = 3;
 
     classement = j2;
     j2->nxt = j1;
-    j1->nxt = NULL;*/
+    j1->nxt = NULL;
+
+    int a = classement->joueur->score;
 
     fichier = fopen("classement.txt", "r+");
     fprintf(fichier, "Classement \t Pseudo \t Score \n");
-    while(classement != NULL){
-        fprintf(fichier, "%d \t\t %s \t %d \n", classement->joueur->classement, classement->joueur->pseudo, classement->joueur->score);
+   /* while(classement != NULL){
+        fprintf(fichier, "%d \t\t %s \t %d \n", classement->joueur->classement, classement->joueur->pseudo, classement->joueur.score);
         classement = classement->nxt;
-    }
+    }*/
     fclose(fichier);
 }
 

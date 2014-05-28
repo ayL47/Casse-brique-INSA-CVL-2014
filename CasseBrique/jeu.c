@@ -305,7 +305,7 @@ int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *ba
     return score;
 }
 
-void play(liste classement) {
+void play(liste classement, SDL_Surface **imgchiffre) {
     int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR] = {{0}};
     Joueur *joueur;
     SDL_Surface *balle = NULL;
@@ -328,7 +328,7 @@ void play(liste classement) {
     /**
     * Initialisation du tableau des images des chiffres et score et vie
     **/
-    SDL_Surface **imgchiffre;
+    /*SDL_Surface **imgchiffre;
     imgchiffre = (SDL_Surface**)malloc(sizeof(SDL_Surface*)*12);
 
     imgchiffre[0] = SDL_LoadBMP("images/0.bmp");
@@ -342,7 +342,7 @@ void play(liste classement) {
     imgchiffre[8] = SDL_LoadBMP("images/8.bmp");
     imgchiffre[9] = SDL_LoadBMP("images/9.bmp");
     imgchiffre[10] = SDL_LoadBMP("images/score.bmp");
-    imgchiffre[11] = SDL_LoadBMP("images/Vies.bmp");
+    imgchiffre[11] = SDL_LoadBMP("images/Vies.bmp");*/
 
 
     // Appel de la boucle de jeu
@@ -356,7 +356,7 @@ void play(liste classement) {
     //ajoutClassement(classement, &joueur);
 
     // Sauvegarde du classement
-    saveJoueur(&joueur);
+
 
     // Libération mémoire
     SDL_FreeSurface(balle);
