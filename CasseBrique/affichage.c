@@ -22,7 +22,7 @@ void blitChiffre(int value, SDL_Surface **imgchiffre, SDL_Rect *position) {
 }
 
 //Mise à jours de l'affichage des scores
-void majScore(int *score, SDL_Surface **imgchiffre) {
+void majScore(int score, SDL_Surface **imgchiffre) {
     SDL_Rect positionChiffreC, positionChiffreD, positionChiffreU;
 
     positionChiffreC.x = 110;
@@ -32,9 +32,9 @@ void majScore(int *score, SDL_Surface **imgchiffre) {
     positionChiffreU.x = positionChiffreD.x + 25;
     positionChiffreU.y = positionChiffreC.y;
 
-    int c = *score/100;
-    int d = (*score/10)%10;
-    int u = (*score%10);
+    int c = score/100;
+    int d = (score/10)%10;
+    int u = (score%10);
 
     blitChiffre(c, imgchiffre, &positionChiffreC);
     blitChiffre(d, imgchiffre, &positionChiffreD);

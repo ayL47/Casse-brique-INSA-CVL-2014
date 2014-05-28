@@ -27,11 +27,13 @@ typedef struct{
         int score;
         char pseudo[TAILLE_MAX_PSEUDO];
         int classement;
-}Joueur;
+} Joueur;
 
 typedef struct cellule cellule;
 struct cellule {
-    Joueur* joueur;
+    int classement;
+    int score;
+    char pseudo[TAILLE_MAX_PSEUDO];
     struct cellule *nxt;
 };
 

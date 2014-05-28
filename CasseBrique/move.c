@@ -80,7 +80,7 @@ void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int
         (*briquesRestantes)--;
         (*score)++;
 
-        majScore(score, imgchiffre);
+        majScore(*score, imgchiffre);
     } else if(mapLevel[(int) caseY][(int) caseXDroite] == BRIQUE) {
         // Brique sur la droite
         ball->Vx = newSpeedX;
@@ -90,7 +90,7 @@ void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int
         (*briquesRestantes)--;
         (*score)++;
 
-        majScore(score, imgchiffre);
+        majScore(*score, imgchiffre);
     } else if(mapLevel[(int) caseYHaut][(int) caseX] == BRIQUE) {
         // Brique sur le haut
         ball->Vy = newSpeedY;
@@ -100,7 +100,7 @@ void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int
         (*briquesRestantes)--;
         (*score)++;
 
-        majScore(score, imgchiffre);
+        majScore(*score, imgchiffre);
     } else if(mapLevel[(int) caseYBas][(int) caseX] == BRIQUE) {
         // Brique sur le bas
         ball->Vy = newSpeedY;
@@ -110,7 +110,7 @@ void moveBalle(SDL_Rect *positionBalle, Ball *ball, SDL_Rect *positionBarre, int
         (*briquesRestantes)--;
         (*score)++;
 
-        majScore(score, imgchiffre);
+        majScore(*score, imgchiffre);
     }
 
     /**

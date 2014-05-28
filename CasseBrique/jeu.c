@@ -85,7 +85,7 @@ int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *ba
         afficheLife(imgchiffre);
 
         //Mise a jours des scores
-        majScore(&score, imgchiffre);
+        majScore(score, imgchiffre);
 
         //Mise a jours des vies
         majLife(life, imgchiffre);
@@ -103,32 +103,33 @@ int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *ba
         // Le jeu ne commence que lorsque le joueur appuie sur 'espace'
         while(jeu == 0) {
             SDL_Flip(SDL_GetVideoSurface());
-            SDL_WaitEvent(&event);
 
-            switch(event.type) {
-                case SDL_QUIT:
-                    jeu++;
-                    continuer = 0;
-                break;
+            while(SDL_PollEvent(&event)) {
+                switch(event.type) {
+                    case SDL_QUIT:
+                        jeu++;
+                        continuer = 0;
+                    break;
 
-                case SDL_KEYDOWN:
-                    switch(event.key.keysym.sym) {
-                        case SDLK_SPACE:
-                            jeu++;
-                        break;
+                    case SDL_KEYDOWN:
+                        switch(event.key.keysym.sym) {
+                            case SDLK_SPACE:
+                                jeu++;
+                            break;
 
-                        case SDLK_ESCAPE:
-                            jeu++;
-                            continuer = 0;
-                        break;
+                            case SDLK_ESCAPE:
+                                jeu++;
+                                continuer = 0;
+                            break;
 
-                        default:
-                        break;
-                    }
-                break;
+                            default:
+                            break;
+                        }
+                    break;
 
-                default:
-                break;
+                    default:
+                    break;
+                }
             }
         }
 
@@ -175,29 +176,30 @@ int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *ba
                 SDL_Flip(SDL_GetVideoSurface());
 
                 while(i){
-                    SDL_WaitEvent(&event);
-                    switch(event.type) {
-                        case SDL_QUIT:
-                            i = 0;
-                        break;
+                    while(SDL_PollEvent(&event)) {
+                        switch(event.type) {
+                            case SDL_QUIT:
+                                i = 0;
+                            break;
 
-                        case SDL_KEYDOWN:
-                            switch(event.key.keysym.sym) {
-                                case SDLK_RETURN:
-                                    i = 0;
-                                break;
+                            case SDL_KEYDOWN:
+                                switch(event.key.keysym.sym) {
+                                    case SDLK_RETURN:
+                                        i = 0;
+                                    break;
 
-                                case SDLK_ESCAPE:
-                                    i = 0;
-                                break;
+                                    case SDLK_ESCAPE:
+                                        i = 0;
+                                    break;
 
-                                default:
-                                break;
-                            }
-                        break;
+                                    default:
+                                    break;
+                                }
+                            break;
 
-                        default:
-                        break;
+                            default:
+                            break;
+                        }
                     }
                 }
 
@@ -234,34 +236,34 @@ int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *ba
                 i = 1;
 
                 while(i){
-                    SDL_WaitEvent(&event);
-                    switch(event.type) {
-                        case SDL_QUIT:
-                            i = 0;
-                            continuer = 0;
-                        break;
+                    while(SDL_PollEvent(&event)) {
+                        switch(event.type) {
+                            case SDL_QUIT:
+                                i = 0;
+                                continuer = 0;
+                            break;
 
-                        case SDL_KEYDOWN:
-                            switch(event.key.keysym.sym) {
-                                case SDLK_RETURN:
-                                    i = 0;
-                                    continuer = 0;
-                                break;
+                            case SDL_KEYDOWN:
+                                switch(event.key.keysym.sym) {
+                                    case SDLK_RETURN:
+                                        i = 0;
+                                        continuer = 0;
+                                    break;
 
-                                case SDLK_ESCAPE:
-                                    i = 0;
-                                    continuer = 0;
-                                break;
+                                    case SDLK_ESCAPE:
+                                        i = 0;
+                                        continuer = 0;
+                                    break;
 
-                                default:
-                                break;
-                            }
-                        break;
+                                    default:
+                                    break;
+                                }
+                            break;
 
-                        default:
-                        break;
+                            default:
+                            break;
+                        }
                     }
-
                 }
             }
 
@@ -270,33 +272,33 @@ int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *ba
                 i = 1;
 
                 while(i){
-                    SDL_WaitEvent(&event);
+                    while(SDL_PollEvent(&event)) {
+                        switch(event.type) {
+                            case SDL_QUIT:
+                                i = 0;
+                                continuer = 0;
+                            break;
 
-                    switch(event.type) {
-                        case SDL_QUIT:
-                            i = 0;
-                            continuer = 0;
-                        break;
+                            case SDL_KEYDOWN:
+                                switch(event.key.keysym.sym) {
+                                    case SDLK_RETURN:
+                                        i = 0;
+                                        continuer = 0;
+                                    break;
 
-                        case SDL_KEYDOWN:
-                            switch(event.key.keysym.sym) {
-                                case SDLK_RETURN:
-                                    i = 0;
-                                    continuer = 0;
-                                break;
+                                    case SDLK_ESCAPE:
+                                        i = 0;
+                                        continuer = 0;
+                                    break;
 
-                                case SDLK_ESCAPE:
-                                    i = 0;
-                                    continuer = 0;
-                                break;
+                                    default:
+                                    break;
+                                }
+                            break;
 
-                                default:
-                                break;
-                            }
-                        break;
-
-                        default:
-                        break;
+                            default:
+                            break;
+                        }
                     }
                 }
             }
@@ -305,9 +307,8 @@ int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *ba
     return score;
 }
 
-void play(liste classement, SDL_Surface **imgchiffre) {
+liste play(liste classement, SDL_Surface **imgchiffre) {
     int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR] = {{0}};
-    Joueur *joueur;
     SDL_Surface *balle = NULL;
     SDL_Surface *barre = NULL;
     SDL_Surface *brique = NULL;
@@ -348,12 +349,14 @@ void play(liste classement, SDL_Surface **imgchiffre) {
     // Appel de la boucle de jeu
     int score = boucleJeu(briqueDouble, briqueVie, balle, barre, brique, mur, vide, mapLevel, imgchiffre);
 
-    //Enregistre le joueur
-    afficheImgSaisie(&joueur, score);
+    // Enregistre le joueur
+    cellule* nouvelleCellule = malloc(sizeof(cellule));
+    nouvelleCellule->nxt = NULL;
 
+    nouvelleCellule = afficheImgSaisie(nouvelleCellule, score);
 
     //Ajout du joueur au classement
-    ajoutClassement(classement, &joueur);
+    classement = ajoutClassement(classement, nouvelleCellule);
 
     // Sauvegarde du classement
 
@@ -364,6 +367,8 @@ void play(liste classement, SDL_Surface **imgchiffre) {
     SDL_FreeSurface(mur);
     SDL_FreeSurface(vide);
     SDL_FreeSurface(briqueVie);
-    SDL_FreeSurface(*imgchiffre);
+    //SDL_FreeSurface(*imgchiffre);
     SDL_FreeSurface(briqueDouble);
+
+    return classement;
 }

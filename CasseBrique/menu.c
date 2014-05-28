@@ -89,56 +89,56 @@ void menu(SDL_Surface **imgchiffre, liste classement, SDL_Surface *buttonPlay, S
     SDL_Flip(SDL_GetVideoSurface());
 
     while(continuer) {
-        SDL_WaitEvent(&event);
+        while(SDL_PollEvent(&event)) {
+            switch(event.type) {
+                case SDL_MOUSEBUTTONUP:
+                    if(event.button.x>=positionButtonPlay.x && event.button.x<=positionButtonPlay.x+233 && event.button.y>=positionButtonPlay.y && event.button.y<=positionButtonPlay.y+37) {
+                        // Si souris sur bouton jouer
+                        classement = play(classement, imgchiffre);
 
-        switch(event.type) {
-            case SDL_MOUSEBUTTONUP:
-                if(event.button.x>=positionButtonPlay.x && event.button.x<=positionButtonPlay.x+233 && event.button.y>=positionButtonPlay.y && event.button.y<=positionButtonPlay.y+37) {
-                    // Si souris sur bouton jouer
-                    play(classement, imgchiffre);
+                        SDL_BlitSurface(menu, NULL, SDL_GetVideoSurface(), &position);
+                        SDL_BlitSurface(buttonPlay, NULL, SDL_GetVideoSurface(), &positionButtonPlay);
+                        SDL_BlitSurface(buttonIns, NULL, SDL_GetVideoSurface(), &positionButtonIns);
+                        SDL_BlitSurface(buttonRank, NULL, SDL_GetVideoSurface(), &positionButtonRank);
+                        SDL_BlitSurface(buttonQuit, NULL, SDL_GetVideoSurface(), &positionButtonQ);
 
-                    SDL_BlitSurface(menu, NULL, SDL_GetVideoSurface(), &position);
-                    SDL_BlitSurface(buttonPlay, NULL, SDL_GetVideoSurface(), &positionButtonPlay);
-                    SDL_BlitSurface(buttonIns, NULL, SDL_GetVideoSurface(), &positionButtonIns);
-                    SDL_BlitSurface(buttonRank, NULL, SDL_GetVideoSurface(), &positionButtonRank);
-                    SDL_BlitSurface(buttonQuit, NULL, SDL_GetVideoSurface(), &positionButtonQ);
+                        SDL_Flip(SDL_GetVideoSurface());
+                    } else if(event.button.x>=positionButtonIns.x && event.button.x<=positionButtonIns.x+233 && event.button.y>=positionButtonIns.y && event.button.y<=positionButtonIns.y+37) {
+                        // Si souris sur bouton instructions
+                        instruction(instructions, position, buttonBack, positionButtonBack);
 
-                    SDL_Flip(SDL_GetVideoSurface());
-                } else if(event.button.x>=positionButtonIns.x && event.button.x<=positionButtonIns.x+233 && event.button.y>=positionButtonIns.y && event.button.y<=positionButtonIns.y+37) {
-                    // Si souris sur bouton instructions
-                    instruction(instructions, position, buttonBack, positionButtonBack);
+                        SDL_BlitSurface(menu, NULL, SDL_GetVideoSurface(), &position);
+                        SDL_BlitSurface(buttonPlay, NULL, SDL_GetVideoSurface(), &positionButtonPlay);
+                        SDL_BlitSurface(buttonIns, NULL, SDL_GetVideoSurface(), &positionButtonIns);
+                        SDL_BlitSurface(buttonRank, NULL, SDL_GetVideoSurface(), &positionButtonRank);
+                        SDL_BlitSurface(buttonQuit, NULL, SDL_GetVideoSurface(), &positionButtonQ);
 
-                    SDL_BlitSurface(menu, NULL, SDL_GetVideoSurface(), &position);
-                    SDL_BlitSurface(buttonPlay, NULL, SDL_GetVideoSurface(), &positionButtonPlay);
-                    SDL_BlitSurface(buttonIns, NULL, SDL_GetVideoSurface(), &positionButtonIns);
-                    SDL_BlitSurface(buttonRank, NULL, SDL_GetVideoSurface(), &positionButtonRank);
-                    SDL_BlitSurface(buttonQuit, NULL, SDL_GetVideoSurface(), &positionButtonQ);
+                        SDL_Flip(SDL_GetVideoSurface());
+                    } else if(event.button.x>=positionButtonRank.x && event.button.x<=positionButtonRank.x+233 && event.button.y>=positionButtonRank.y && event.button.y<=positionButtonRank.y+37) {
+                        // Si souris sur bouton scores
+                        score(imgchiffre, classement, rank, position, buttonBack, positionButtonBack);
 
-                    SDL_Flip(SDL_GetVideoSurface());
-                } else if(event.button.x>=positionButtonRank.x && event.button.x<=positionButtonRank.x+233 && event.button.y>=positionButtonRank.y && event.button.y<=positionButtonRank.y+37) {
-                    // Si souris sur bouton scores
-                    score(imgchiffre, classement, rank, position, buttonBack, positionButtonBack);
+                        SDL_BlitSurface(menu, NULL, SDL_GetVideoSurface(), &position);
+                        SDL_BlitSurface(buttonPlay, NULL, SDL_GetVideoSurface(), &positionButtonPlay);
+                        SDL_BlitSurface(buttonIns, NULL, SDL_GetVideoSurface(), &positionButtonIns);
+                        SDL_BlitSurface(buttonRank, NULL, SDL_GetVideoSurface(), &positionButtonRank);
+                        SDL_BlitSurface(buttonQuit, NULL, SDL_GetVideoSurface(), &positionButtonQ);
 
-                    SDL_BlitSurface(menu, NULL, SDL_GetVideoSurface(), &position);
-                    SDL_BlitSurface(buttonPlay, NULL, SDL_GetVideoSurface(), &positionButtonPlay);
-                    SDL_BlitSurface(buttonIns, NULL, SDL_GetVideoSurface(), &positionButtonIns);
-                    SDL_BlitSurface(buttonRank, NULL, SDL_GetVideoSurface(), &positionButtonRank);
-                    SDL_BlitSurface(buttonQuit, NULL, SDL_GetVideoSurface(), &positionButtonQ);
-
-                    SDL_Flip(SDL_GetVideoSurface());
-                } else if(event.button.x>=positionButtonQ.x && event.button.x<=positionButtonQ.x+233 && event.button.y>=positionButtonQ.y && event.button.y<=positionButtonQ.y+37) {
-                    // Si souris sur bouton quitter
-                    continuer = 0;
-                }
-            break;
-            case SDL_QUIT:
-                continuer = 0;
+                        SDL_Flip(SDL_GetVideoSurface());
+                    } else if(event.button.x>=positionButtonQ.x && event.button.x<=positionButtonQ.x+233 && event.button.y>=positionButtonQ.y && event.button.y<=positionButtonQ.y+37) {
+                        // Si souris sur bouton quitter
+                        continuer = 0;
+                    }
                 break;
-            case SDL_KEYDOWN:
-                if(event.key.keysym.sym == SDLK_ESCAPE) {
+                case SDL_QUIT:
                     continuer = 0;
-                }
-            break;
+                    break;
+                case SDL_KEYDOWN:
+                    if(event.key.keysym.sym == SDLK_ESCAPE) {
+                        continuer = 0;
+                    }
+                break;
+            }
         }
     }
 }
@@ -152,28 +152,29 @@ void instruction(SDL_Surface *instructions, SDL_Rect position, SDL_Surface *butt
     SDL_Flip(SDL_GetVideoSurface());
 
     while(continuer) {
-        SDL_WaitEvent(&event);
-        switch(event.type) {
-            case SDL_MOUSEBUTTONUP:
-                if(event.button.x>=positionButtonBack.x && event.button.x<=positionButtonBack.x+233 && event.button.y>=positionButtonBack.y && event.button.y<=positionButtonBack.y+37) {
-                    // Si souris sur bouton retour
+        while(SDL_PollEvent(&event)) {
+            switch(event.type) {
+                case SDL_MOUSEBUTTONUP:
+                    if(event.button.x>=positionButtonBack.x && event.button.x<=positionButtonBack.x+233 && event.button.y>=positionButtonBack.y && event.button.y<=positionButtonBack.y+37) {
+                        // Si souris sur bouton retour
+                        continuer = 0;
+                    }
+                break;
+                case SDL_QUIT:
                     continuer = 0;
-                }
-            break;
-            case SDL_QUIT:
-                continuer = 0;
-            break;
-            case SDL_KEYDOWN:
-                if(event.key.keysym.sym == SDLK_ESCAPE) {
-                    continuer = 0;
-                }
-            break;
+                break;
+                case SDL_KEYDOWN:
+                    if(event.key.keysym.sym == SDLK_ESCAPE) {
+                        continuer = 0;
+                    }
+                break;
+            }
         }
     }
 }
 
 void score(SDL_Surface **imgchiffre, liste classement, SDL_Surface *rank, SDL_Rect position, SDL_Surface *buttonBack, SDL_Rect positionButtonBack) {
-    int continuer = 1;
+    int bContinuer = 1;
     SDL_Event event;
 
     SDL_BlitSurface(rank, NULL, SDL_GetVideoSurface(), &position);
@@ -183,24 +184,27 @@ void score(SDL_Surface **imgchiffre, liste classement, SDL_Surface *rank, SDL_Re
     afficheClassement(classement, imgchiffre);
     //affiche(classement);
 
-    while(continuer) {
-        SDL_WaitEvent(&event);
-
-        switch(event.type) {
-            case SDL_MOUSEBUTTONUP:
-                if(event.button.x>=positionButtonBack.x && event.button.x<=positionButtonBack.x+233 && event.button.y>=positionButtonBack.y && event.button.y<=positionButtonBack.y+37) {
-                   // Si souris sur bouton retour
-                   continuer = 0;
-                }
-            break;
-            case SDL_QUIT:
-                continuer = 0;
-            break;
-            case SDL_KEYDOWN:
-                if(event.key.keysym.sym == SDLK_ESCAPE) {
-                    continuer = 0;
-                }
-            break;
+    while(bContinuer) {
+        while(SDL_PollEvent(&event)) {
+            switch(event.type) {
+                case SDL_MOUSEBUTTONUP:
+                    if(event.button.x>=positionButtonBack.x && event.button.x<=positionButtonBack.x+233 && event.button.y>=positionButtonBack.y && event.button.y<=positionButtonBack.y+37) {
+                       // Si souris sur bouton retour
+                       bContinuer = 0;
+                       return 0;
+                    }
+                break;
+                case SDL_QUIT:
+                    bContinuer = 0;
+                       return 0;
+                break;
+                case SDL_KEYDOWN:
+                    if(event.key.keysym.sym == SDLK_ESCAPE) {
+                        bContinuer = 0;
+                       return 0;
+                    }
+                break;
+            }
         }
     }
 }

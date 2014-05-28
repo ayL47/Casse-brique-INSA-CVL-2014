@@ -8,7 +8,7 @@
 #include <math.h>
 #include "classement.h"
 
-void saisieTexte(Joueur *joueur){
+liste saisieTexte(liste nouvelleCellule) {
     SDL_Event eventSaisie;
     SDL_EnableUNICODE(1);
 
@@ -23,14 +23,14 @@ void saisieTexte(Joueur *joueur){
         if(eventSaisie.type == SDL_KEYDOWN){
             if(eventSaisie.key.keysym.sym == SDLK_RETURN){
                 SDL_EnableUNICODE(0);
-                joueur->pseudo[position +1] = '\0';
+                nouvelleCellule->pseudo[position +1] = '\0';
                 continuerSaisie = 0;
             } else if(eventSaisie.key.keysym.sym == SDLK_SPACE){
                 SDL_EnableUNICODE(0);
                 continuerSaisie = 0;
             } else if(((eventSaisie.key.keysym.unicode & 0xFF00) == 0x0000) && (position + 1 < TAILLE_MAX_PSEUDO) ) {
-                joueur->pseudo[position] = eventSaisie.key.keysym.unicode;
-                afficheTexte(positionT, joueur->pseudo[position]);
+                nouvelleCellule->pseudo[position] = eventSaisie.key.keysym.unicode;
+                afficheTexte(positionT, nouvelleCellule->pseudo[position]);
                 position++;
                 positionT.x += 10;
             }
@@ -39,13 +39,12 @@ void saisieTexte(Joueur *joueur){
         SDL_Flip(SDL_GetVideoSurface());
     }
 
-
+    return nouvelleCellule;
 }
 
-void afficheImgSaisie(Joueur *joueur, int score){
-
+liste afficheImgSaisie(liste nouvelleCellule, int score) {
     SDL_Surface *saisie = NULL;
-    joueur->score = score;
+    nouvelleCellule->score = score;
     SDL_Rect position;
 
     position.x = 0;
@@ -56,9 +55,10 @@ void afficheImgSaisie(Joueur *joueur, int score){
     SDL_BlitSurface(saisie, NULL, SDL_GetVideoSurface(), &position);
 
     SDL_Flip(SDL_GetVideoSurface());
-    saisieTexte(joueur);
-    char nom = joueur->pseudo;
+    nouvelleCellule = saisieTexte(nouvelleCellule);
+    //char nom = joueur.pseudo;
 
+    return nouvelleCellule;
 }
 
 void afficheTexte(SDL_Rect position, int unicodevalue){
@@ -108,12 +108,18 @@ int estVide(liste classement){
 	return classement==NULL;
 }
 
-liste ajouteEnTete(liste classement, Joueur *player) {
-    player->classement = 1;
-
+liste ajouteEnTete(liste classement, liste celluleAAjouter) {
     cellule* nouvelleCellule = malloc(sizeof(cellule));
 
-    nouvelleCellule->joueur = player;
+    nouvelleCellule->classement = 1;
+    nouvelleCellule->score = celluleAAjouter->score;
+
+    int position = 0;
+    while(celluleAAjouter->pseudo[position] != '\0' && position < TAILLE_MAX_PSEUDO) {
+        nouvelleCellule->pseudo[position] = celluleAAjouter->pseudo[position];
+        position++;
+    }
+
     nouvelleCellule->nxt = classement;
 
     return nouvelleCellule;
@@ -122,7 +128,7 @@ liste ajouteEnTete(liste classement, Joueur *player) {
 liste ajouteEnFin(liste classement, Joueur *player) {
     //player->classement = 2;
 
-    cellule* nouvelleCellule = malloc(sizeof(cellule));
+    /*cellule* nouvelleCellule = malloc(sizeof(cellule));
 
     nouvelleCellule->joueur = player;
     nouvelleCellule->nxt = NULL;
@@ -139,35 +145,63 @@ liste ajouteEnFin(liste classement, Joueur *player) {
         temp->nxt = nouvelleCellule;
 
         return classement;
-    }
+    }*/
 }
 
-liste ajoutEnPosition(liste classement, Joueur *player, int position) {
-    player->classement = position;
-
+liste ajoutEnPosition(liste classement, liste celluleAAjouter, int position) {
     cellule* nouvelleCellule = malloc(sizeof(cellule));
     nouvelleCellule->nxt = NULL;
 
-    nouvelleCellule->joueur = player;
+    nouvelleCellule->classement = position;
+    nouvelleCellule->score = celluleAAjouter->score;
+
+    int pos = 0;
+    while(celluleAAjouter->pseudo[pos] != '\0' && pos < TAILLE_MAX_PSEUDO) {
+        nouvelleCellule->pseudo[pos] = celluleAAjouter->pseudo[pos];
+        pos++;
+    }
+
     nouvelleCellule->nxt = classement->nxt;
+
     classement->nxt = nouvelleCellule;
 
     return nouvelleCellule;
 }
 
-int insere(liste classement, Joueur *player){
+liste ajoutClassement(liste classement, liste nouvelleCellule) {
     int i = 1;
-    cellule *tmp = classement;
-    if((estVide(classement))||(classement->joueur->score < player->score)){
-            ajouteEnTete(classement, player);
+    cellule *premierElem = classement;
+
+    if(estVide(classement)) {
+        premierElem = ajouteEnTete(classement, nouvelleCellule);
+    } else {
+        if(classement->score < nouvelleCellule->score) {
+            premierElem = ajouteEnTete(classement, nouvelleCellule);
+            classement = premierElem->nxt;
+            i++;
         } else {
+            i++;
+
             //Je ne suis pas
-            while((tmp->nxt!=NULL) && (tmp->nxt->joueur->score < player->score)){
-                    tmp = tmp->nxt;
-                    i++;
+            while((classement != NULL) && (classement->nxt != NULL) && (classement->nxt->score > nouvelleCellule->score)){
+                classement = classement->nxt;
+                i++;
             }
-            ajoutEnPosition(classement, player, i);
+
+            ajoutEnPosition(classement, nouvelleCellule, i);
+
+            classement = classement->nxt;
         }
+
+        while(classement != NULL) {
+            classement->classement = i;
+
+            classement = classement->nxt;
+            i++;
+        }
+    }
+
+    return premierElem;
 }
 
 
@@ -181,12 +215,13 @@ void afficheClassement(liste classement, SDL_Surface **imgchiffre) {
     positionClassement.x = 50;
     positionClassement.y = 250;
 
-    Joueur joueurTest;
+    /*Joueur joueurTest;
     joueurTest.pseudo[0] = 'a';
     joueurTest.pseudo[1] = 'b';
     joueurTest.pseudo[2] = 'k';
     joueurTest.pseudo[3] = 'm';
     joueurTest.score = 70;
+    joueurTest.classement = 1;
 
     Joueur joueurTest2;
     joueurTest2.pseudo[0] = 'u';
@@ -204,22 +239,29 @@ void afficheClassement(liste classement, SDL_Surface **imgchiffre) {
     joueurTest3.score = 40;
     joueurTest3.classement = 3;
 
-    classement = ajouteEnTete(classement, &joueurTest);
-    classement = ajouteEnFin(classement, &joueurTest2);
-    classement = ajouteEnFin(classement, &joueurTest3);
-
+    classement = ajoutClassement(classement, &joueurTest);
+    classement = ajoutClassement(classement, &joueurTest2);
+    classement = ajoutClassement(classement, &joueurTest3);*/
 
     cellule *uneCellule = classement;
+    int *scorejoueur;
+    int *classementJoueur;
 
     while(!estVide(uneCellule)) {
-        while(uneCellule->joueur->pseudo[position] != '\0' && position < TAILLE_MAX_PSEUDO) {
-            afficheTexte(positionLettre, uneCellule->joueur->pseudo[position]);
-            int *scorejoueur = uneCellule->joueur->score;
-            majScore(&scorejoueur, imgchiffre);
-            blitChiffre(uneCellule->joueur->classement, imgchiffre, &positionClassement);
+        while(uneCellule->pseudo[position] != '\0' && position < TAILLE_MAX_PSEUDO) {
+            afficheTexte(positionLettre, uneCellule->pseudo[position]);
+
             position++;
             positionLettre.x += 10;
         }
+
+        scorejoueur = uneCellule->score;
+
+        majScore(scorejoueur, imgchiffre);
+
+        classementJoueur = uneCellule->classement;
+        blitChiffre(classementJoueur, imgchiffre, &positionClassement);
+
         uneCellule = uneCellule->nxt;
         positionLettre.y += 20;
         position = 0;
@@ -229,14 +271,6 @@ void afficheClassement(liste classement, SDL_Surface **imgchiffre) {
 
     SDL_Flip(SDL_GetVideoSurface());
 }
-
-
-void ajoutClassement(liste classement, Joueur *joueur){
-
-    classement = insere(classement, joueur);
-}
-
-
 
 void saveJoueur(Joueur *joueur){
     FILE *fichier = NULL;
@@ -277,7 +311,7 @@ void saveClassement(liste classement){
     j2->nxt = j1;
     j1->nxt = NULL;
 
-    int a = classement->joueur->score;
+    int a = classement->score;
 
     fichier = fopen("classement.txt", "r+");
     fprintf(fichier, "Classement \t Pseudo \t Score \n");
