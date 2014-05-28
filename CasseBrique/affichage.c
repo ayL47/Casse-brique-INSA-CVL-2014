@@ -16,6 +16,7 @@ void afficheScores(SDL_Surface **imgchiffre){
     SDL_BlitSurface(imgchiffre[10], NULL, SDL_GetVideoSurface(), &positionScore);
 }
 
+
 void blitChiffre(int value, SDL_Surface **imgchiffre, SDL_Rect *position) {
     SDL_BlitSurface(imgchiffre[value], NULL, SDL_GetVideoSurface(), position);
 }

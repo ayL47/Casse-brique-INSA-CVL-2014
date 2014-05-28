@@ -22,7 +22,29 @@ void initMenu(liste classement) {
     buttonBack = SDL_LoadBMP("images/boutonR_pas_survole.bmp");
     menuImg = SDL_LoadBMP("images/menu.bmp");
 
-    menu(classement, buttonPlay, buttonIns, instructions, buttonRank, rank, buttonQuit, buttonBack, menuImg);
+    /**
+    * Initialisation du tableau des images des chiffres et score et vie
+    **/
+    SDL_Surface **imgchiffre;
+    imgchiffre = (SDL_Surface**)malloc(sizeof(SDL_Surface*)*12);
+
+    imgchiffre[0] = SDL_LoadBMP("images/0.bmp");
+    imgchiffre[1] = SDL_LoadBMP("images/1.bmp");
+    imgchiffre[2] = SDL_LoadBMP("images/2.bmp");
+    imgchiffre[3] = SDL_LoadBMP("images/3.bmp");
+    imgchiffre[4] = SDL_LoadBMP("images/4.bmp");
+    imgchiffre[5] = SDL_LoadBMP("images/5.bmp");
+    imgchiffre[6] = SDL_LoadBMP("images/6.bmp");
+    imgchiffre[7] = SDL_LoadBMP("images/7.bmp");
+    imgchiffre[8] = SDL_LoadBMP("images/8.bmp");
+    imgchiffre[9] = SDL_LoadBMP("images/9.bmp");
+    imgchiffre[10] = SDL_LoadBMP("images/score.bmp");
+    imgchiffre[11] = SDL_LoadBMP("images/Vies.bmp");
+
+    SDL_SetColorKey(imgchiffre[0], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[0]->format, 0, 0, 0));
+
+    menu(imgchiffre, classement, buttonPlay, buttonIns, instructions, buttonRank, rank, buttonQuit, buttonBack, menuImg);
+
 
     // Libère les surface
     SDL_FreeSurface(buttonPlay);
@@ -32,9 +54,10 @@ void initMenu(liste classement) {
     SDL_FreeSurface(instructions);
     SDL_FreeSurface(rank);
     SDL_FreeSurface(buttonBack);
+    SDL_FreeSurface(*imgchiffre);
 }
 
-void menu(liste classement, SDL_Surface *buttonPlay, SDL_Surface *buttonIns, SDL_Surface *instructions, SDL_Surface *buttonRank, SDL_Surface *rank, SDL_Surface *buttonQuit, SDL_Surface *buttonBack, SDL_Surface *menu) {
+void menu(SDL_Surface **imgchiffre, liste classement, SDL_Surface *buttonPlay, SDL_Surface *buttonIns, SDL_Surface *instructions, SDL_Surface *buttonRank, SDL_Surface *rank, SDL_Surface *buttonQuit, SDL_Surface *buttonBack, SDL_Surface *menu) {
     int continuer = 1;
     SDL_Event event;
 
@@ -73,7 +96,7 @@ void menu(liste classement, SDL_Surface *buttonPlay, SDL_Surface *buttonIns, SDL
             case SDL_MOUSEBUTTONUP:
                 if(event.button.x>=positionButtonPlay.x && event.button.x<=positionButtonPlay.x+233 && event.button.y>=positionButtonPlay.y && event.button.y<=positionButtonPlay.y+37) {
                     // Si souris sur bouton jouer
-                    play(classement);
+                    play(classement, imgchiffre);
 
                     SDL_BlitSurface(menu, NULL, SDL_GetVideoSurface(), &position);
                     SDL_BlitSurface(buttonPlay, NULL, SDL_GetVideoSurface(), &positionButtonPlay);
@@ -95,7 +118,7 @@ void menu(liste classement, SDL_Surface *buttonPlay, SDL_Surface *buttonIns, SDL
                     SDL_Flip(SDL_GetVideoSurface());
                 } else if(event.button.x>=positionButtonRank.x && event.button.x<=positionButtonRank.x+233 && event.button.y>=positionButtonRank.y && event.button.y<=positionButtonRank.y+37) {
                     // Si souris sur bouton scores
-                    score(classement, rank, position, buttonBack, positionButtonBack);
+                    score(imgchiffre, classement, rank, position, buttonBack, positionButtonBack);
 
                     SDL_BlitSurface(menu, NULL, SDL_GetVideoSurface(), &position);
                     SDL_BlitSurface(buttonPlay, NULL, SDL_GetVideoSurface(), &positionButtonPlay);
@@ -150,7 +173,7 @@ void instruction(SDL_Surface *instructions, SDL_Rect position, SDL_Surface *butt
     }
 }
 
-void score(liste classement, SDL_Surface *rank, SDL_Rect position, SDL_Surface *buttonBack, SDL_Rect positionButtonBack) {
+void score(SDL_Surface **imgchiffre, liste classement, SDL_Surface *rank, SDL_Rect position, SDL_Surface *buttonBack, SDL_Rect positionButtonBack) {
     int continuer = 1;
     SDL_Event event;
 
@@ -158,7 +181,7 @@ void score(liste classement, SDL_Surface *rank, SDL_Rect position, SDL_Surface *
     SDL_BlitSurface(buttonBack, NULL, SDL_GetVideoSurface(), &positionButtonBack);
     SDL_Flip(SDL_GetVideoSurface());
 
-    afficheClassement(classement);
+    afficheClassement(classement, imgchiffre);
     //affiche(classement);
 
     while(continuer) {

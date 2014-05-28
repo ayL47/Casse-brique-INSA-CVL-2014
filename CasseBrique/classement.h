@@ -10,10 +10,11 @@ int estVide(liste classement);
 liste ajouteEnTete(liste classement, Joueur *player);
 liste ajouteEnFin(liste classement, Joueur *player);
 int insere(liste classement, Joueur *player);
-void affiche(liste classement);
+void afficheClassement(liste classement, SDL_Surface **imgchiffre);
 liste ajoutEnPosition(liste classement, Joueur* player, int position);
 void saveJoueur();
 void saveClassement(liste classement);
+
 
 
 #endif // CLASSEMENT_H_INCLUDED
