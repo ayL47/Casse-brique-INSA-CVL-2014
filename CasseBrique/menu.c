@@ -41,7 +41,6 @@ void initMenu(liste classement) {
     imgchiffre[10] = SDL_LoadBMP("images/score.bmp");
     imgchiffre[11] = SDL_LoadBMP("images/Vies.bmp");
 
-    SDL_SetColorKey(imgchiffre[0], SDL_SRCCOLORKEY, SDL_MapRGB(imgchiffre[0]->format, 0, 0, 0));
 
     menu(imgchiffre, classement, buttonPlay, buttonIns, instructions, buttonRank, rank, buttonQuit, buttonBack, menuImg);
 

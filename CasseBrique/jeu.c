@@ -353,7 +353,7 @@ void play(liste classement, SDL_Surface **imgchiffre) {
 
 
     //Ajout du joueur au classement
-    //ajoutClassement(classement, &joueur);
+    ajoutClassement(classement, &joueur);
 
     // Sauvegarde du classement
 

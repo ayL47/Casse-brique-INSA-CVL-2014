@@ -23,13 +23,13 @@ void saisieTexte(Joueur *joueur){
         if(eventSaisie.type == SDL_KEYDOWN){
             if(eventSaisie.key.keysym.sym == SDLK_RETURN){
                 SDL_EnableUNICODE(0);
+                joueur->pseudo[position +1] = '\0';
                 continuerSaisie = 0;
             } else if(eventSaisie.key.keysym.sym == SDLK_SPACE){
                 SDL_EnableUNICODE(0);
                 continuerSaisie = 0;
             } else if(((eventSaisie.key.keysym.unicode & 0xFF00) == 0x0000) && (position + 1 < TAILLE_MAX_PSEUDO) ) {
                 joueur->pseudo[position] = eventSaisie.key.keysym.unicode;
-                joueur->pseudo[position +1] = '\0';
                 afficheTexte(positionT, joueur->pseudo[position]);
                 position++;
                 positionT.x += 10;
@@ -178,8 +178,8 @@ void afficheClassement(liste classement, SDL_Surface **imgchiffre) {
 
     positionLettre.x = 80;
     positionLettre.y = 250;
-
-
+    positionClassement.x = 50;
+    positionClassement.y = 250;
 
     Joueur joueurTest;
     joueurTest.pseudo[0] = 'a';
@@ -210,26 +210,24 @@ void afficheClassement(liste classement, SDL_Surface **imgchiffre) {
 
 
     cellule *uneCellule = classement;
-    int b = uneCellule->joueur->score;
+
     while(!estVide(uneCellule)) {
         while(uneCellule->joueur->pseudo[position] != '\0' && position < TAILLE_MAX_PSEUDO) {
             afficheTexte(positionLettre, uneCellule->joueur->pseudo[position]);
             int *scorejoueur = uneCellule->joueur->score;
             majScore(&scorejoueur, imgchiffre);
+            blitChiffre(uneCellule->joueur->classement, imgchiffre, &positionClassement);
             position++;
             positionLettre.x += 10;
         }
-        int b = uneCellule->joueur->score;
-        int a = uneCellule->joueur->score;
         uneCellule = uneCellule->nxt;
         positionLettre.y += 20;
         position = 0;
         positionLettre.x = 80;
+        positionClassement.y += 25;
     }
 
     SDL_Flip(SDL_GetVideoSurface());
-
-
 }
 
 
