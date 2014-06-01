@@ -9,4 +9,5 @@ void afficheWin();
 void majLife(int life, SDL_Surface **imgchiffre;
 void afficheLife(SDL_Surface **imgchiffre);
 
+
 #endif // AFFICHAGE_H_INCLUDED

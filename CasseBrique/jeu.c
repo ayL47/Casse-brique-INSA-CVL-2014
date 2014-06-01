@@ -7,7 +7,11 @@
 #include "constantes.h"
 #include "move.h"
 
-int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_Surface *mur, SDL_Surface *vide, int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR], SDL_Surface **imgchiffre) {
+/**
+* Fonctions gérant le jeux
+**/
+
+int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *balle, SDL_Surface *barre, SDL_Surface *brique, SDL_Surface *mur, SDL_Surface *vide, int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR], SDL_Surface **imgchiffre, int speed) {
     SDL_Rect position, positionBalle, positionBarre;
     SDL_Event event;
 
@@ -153,11 +157,11 @@ int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *ba
                             break;
 
                             case SDLK_RIGHT:
-                               moveBarre(&positionBarre, DROITE);
+                               moveBarre(&positionBarre, DROITE, speed);
                             break;
 
                             case SDLK_LEFT:
-                                moveBarre(&positionBarre, GAUCHE);
+                                moveBarre(&positionBarre, GAUCHE, speed);
                             break;
 
                             default:
@@ -202,12 +206,15 @@ int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *ba
                         }
                     }
                 }
-
+                //On augmente de 1 le niveau
                 level++;
-
+                //Tant que le niveau est inférieur au niveau maximun
                 if(level <= LEVEL_MAX) {
+                    //On charge le nouveaux niveaux
                     loadLevel(mapLevel, level, &briquesRestantes);
-
+                    //On re initialise initLevel pour changer les valeurs du tableau mapLevel en briques, mur, ou vide
+                    //On met jeu à 0 pour attendre que le joueur appuie sur espace pour lancer le jeu
+                    //On donne 3 vie suplémentaires au joueur
                     jeu = 0;
                     initLevel = 0;
                     life = life +3;
@@ -219,6 +226,9 @@ int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *ba
 
             //Si une vie a été perdue
             if(newgame == 1) {
+                //On met jeu à 0 pour attendre que le joueur appuie sur espace pour lancer le jeu
+                //Le joueur perd une vie
+                //On remet a 0 la variable newgame pour une nouvelle partie
                 jeu = 0;
                 initLevel = 0;
                 newgame = 0;
@@ -230,8 +240,9 @@ int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *ba
                 //MAJ du nombres de vies
                 majLife(life, imgchiffre);
 
-                // Afficher écran perdu
+                // Affiche écran perdu
                 afficheLoose();
+                //Mise à jours de l'écran
                 SDL_Flip(SDL_GetVideoSurface());
                 i = 1;
 
@@ -268,7 +279,6 @@ int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *ba
             }
 
             if(gagner == 1) {
-                // Afficher écran de saisie du pseudo
                 i = 1;
 
                 while(i){
@@ -307,7 +317,7 @@ int boucleJeu(SDL_Surface *briqueDouble, SDL_Surface *briqueVie, SDL_Surface *ba
     return score;
 }
 
-liste play(liste classement, SDL_Surface **imgchiffre) {
+liste play(liste classement, SDL_Surface **imgchiffre, int speed) {
     int mapLevel[NB_BLOCS_HAUTEUR][NB_BLOCS_LARGEUR] = {{0}};
     SDL_Surface *balle = NULL;
     SDL_Surface *barre = NULL;
@@ -347,7 +357,7 @@ liste play(liste classement, SDL_Surface **imgchiffre) {
 
 
     // Appel de la boucle de jeu
-    int score = boucleJeu(briqueDouble, briqueVie, balle, barre, brique, mur, vide, mapLevel, imgchiffre);
+    int score = boucleJeu(briqueDouble, briqueVie, balle, barre, brique, mur, vide, mapLevel, imgchiffre, speed);
 
     // Enregistre le joueur
     cellule* nouvelleCellule = malloc(sizeof(cellule));
@@ -359,6 +369,7 @@ liste play(liste classement, SDL_Surface **imgchiffre) {
     classement = ajoutClassement(classement, nouvelleCellule);
 
     // Sauvegarde du classement
+    saveClassement(classement);
 
 
     // Libération mémoire
@@ -372,3 +383,4 @@ liste play(liste classement, SDL_Surface **imgchiffre) {
 
     return classement;
 }
+

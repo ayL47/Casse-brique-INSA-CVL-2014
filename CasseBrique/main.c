@@ -6,20 +6,21 @@
 #include "menu.h"
 
 int main(int argc, char *argv[]) {
-    SDL_Event event;
+    //Initialisation de la SDL
     SDL_Init(SDL_INIT_VIDEO);
-    //TTF_Init();
     SDL_SetVideoMode(LARGEUR_FENETRE, HAUTEUR_FENETRE, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
-    SDL_WM_SetCaption(":: Casse-briques ::", NULL);
+    SDL_WM_SetCaption(":: Casse-briques - INSA-CVL - 2014 ::", NULL);
 
+    // Mise à 0 du classement
     liste classement = NULL;
-    //test d'ajout classement
-    //afficheClassement(classement);
-    //saveClassement(classement);
-    // Affichage du menu
+
+    // On charge le classement précédement établi
+   // readClassement(classement);
+
+    //On initialise notre menu
     initMenu(classement);
 
-    // Fermeture SDL
+    // Appel de la fonction de fermeture de la SDL
     close();
 
     return 0;

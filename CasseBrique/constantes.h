@@ -8,26 +8,19 @@
 #define LARGEUR_FENETRE     TAILLE_BLOC * NB_BLOCS_LARGEUR
 #define HAUTEUR_FENETRE     TAILLE_BLOC * NB_BLOCS_HAUTEUR
 #define TAILLE_MAX_PSEUDO   20
-#define LEVEL_MAX   2
+#define LEVEL_MAX   4
 
 enum {MUR, BRIQUE, VIDE, BRIQUEVIE, BRIQUEDOUBLE};
 enum {GAUCHE, DROITE};
 
-/*typedef struct        /* Gestion des événements
-{
-    char key[SDLK_LAST];
-} Input;*/
+
 
  typedef struct{
         double Vx; // Vitesse horizontale de la balle
         double Vy; // Vitesse verticale
 } Ball;
 
-typedef struct{
-        int score;
-        char pseudo[TAILLE_MAX_PSEUDO];
-        int classement;
-} Joueur;
+
 
 typedef struct cellule cellule;
 struct cellule {
