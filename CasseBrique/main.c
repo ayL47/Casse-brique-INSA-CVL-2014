@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     liste classement = NULL;
 
     // On charge le classement précédement établi
-   // readClassement(classement);
+    classement = readClassement(classement);
 
     //On initialise notre menu
     initMenu(classement);

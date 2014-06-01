@@ -35,6 +35,7 @@ liste saisieTexte(liste nouvelleCellule, SDL_Rect positionV) {
                 continuerSaisie = 0;
             } else if(eventSaisie.key.keysym.sym == SDLK_SPACE){
                 SDL_EnableUNICODE(0);
+                nouvelleCellule->pseudo[position +1] = '\0';
                 continuerSaisie = 0;
             } else if(((eventSaisie.key.keysym.unicode & 0xFF00) == 0x0000) && (position + 1 < TAILLE_MAX_PSEUDO) ) {
                 nouvelleCellule->pseudo[position] = eventSaisie.key.keysym.unicode;
@@ -152,6 +153,10 @@ liste ajouteEnTete(liste classement, liste celluleAAjouter) {
         position++;
     }
 
+    if(position < TAILLE_MAX_PSEUDO) {
+        nouvelleCellule->pseudo[position] = '\0';
+    }
+
     nouvelleCellule->nxt = classement;
 
     return nouvelleCellule;
@@ -170,6 +175,10 @@ liste ajoutEnPosition(liste classement, liste celluleAAjouter, int position) {
     while(celluleAAjouter->pseudo[pos] != '\0' && pos < TAILLE_MAX_PSEUDO) {
         nouvelleCellule->pseudo[pos] = celluleAAjouter->pseudo[pos];
         pos++;
+    }
+
+    if(pos < TAILLE_MAX_PSEUDO) {
+        nouvelleCellule->pseudo[pos] = '\0';
     }
 
     nouvelleCellule->nxt = classement->nxt;
@@ -272,7 +281,7 @@ void afficheClassement(liste classement, SDL_Surface **imgchiffre) {
 }*/
 
 //Sauvegarde du classement dans un fichier .txt
-void saveClassement(liste classement){
+/*void saveClassement(liste classement){
     FILE *fichier = NULL;
     cellule *uneCellule = classement;
 
@@ -282,12 +291,43 @@ void saveClassement(liste classement){
         fprintf(fichier, "%d\n%s\n%d\n", uneCellule->classement, uneCellule->pseudo, uneCellule->score);
         uneCellule = uneCellule->nxt;
     }
+
     fclose(fichier);
+}
+*/
+
+//Sauvegarde du classement dans un fichier .txt
+void saveClassement(liste classement){
+    FILE *fichier = NULL;
+    cellule *uneCellule = classement;
+    int i = 0;
+
+    fichier = fopen("classement.txt", "r+");
+
+    if(fichier != NULL) {
+        while(uneCellule != NULL){
+            i = 0;
+            //fprintf(fichier, "%d,%s,%d;", uneCellule->classement, uneCellule->pseudo, uneCellule->score);
+
+            fprintf(fichier, "%d,;", uneCellule->classement);
+
+            while(uneCellule->pseudo[i] != '\0') {
+                fprintf(fichier, "%c", uneCellule->pseudo[i]);
+                i++;
+            }
+
+            fprintf(fichier, ",%d;", uneCellule->score);
+
+            uneCellule = uneCellule->nxt;
+        }
+
+        fclose(fichier);
+    }
 }
 
 //On lit le classement sauvegardé dans le fichier .txt
-void readClassement(liste classement){
-    FILE *fichier = NULL;
+liste readClassement(liste classement){
+    /*FILE *fichier = NULL;
     int i = 0;
     int b, c;
     char str1[3]="", str2[20]="", str3[3]="";
@@ -297,25 +337,83 @@ void readClassement(liste classement){
     nouvelleCellule->nxt = NULL;
 
     fichier = fopen("classement.txt", "r");
-    while (fichier != NULL) {
+
+    if(fichier != NULL) {
             fgets(str1, 3, fichier);
             int a = atoi(str1);
+            nouvelleCellule->classement = 1;
             nouvelleCellule->classement = a;
             b = nouvelleCellule->classement;
+
             fgets(str2, 20, fichier);
             while (str2[i] != '\n'){
                 nouvelleCellule->pseudo[i] = str2[i];
                 i++;
             }
+
             fgets(str3, 5, fichier);
             c = atoi(str3);
             nouvelleCellule->score = c;
             i = 0;
             classement = ajoutClassement(classement, nouvelleCellule);
             nouvelleCellule = nouvelleCellule->nxt;
+
+        fclose(fichier);
+    }*/
+
+    //liste classement = NULL;
+
+    FILE *fichier = NULL;
+    char strClassement[501] = {0};
+    char *aLine = NULL, *aCopy = NULL;
+    char pseudo[TAILLE_MAX_PSEUDO];
+    int score = 0, nbClassement = 0, i = 0, j = 0, k = 0;
+    char *ePseudo = NULL, *eScore = NULL, *eClass = NULL;
+    char *tabLine[10];
+
+    fichier = fopen("classement.txt", "r");
+
+    if(fichier != NULL) {
+        fgets(strClassement, 500, fichier); // Place le contenu du niveau dans strClassement
+        fclose(fichier);
     }
 
-    fclose(fichier);
+    aLine = strtok(strClassement, ";");
+
+    while(aLine != NULL) {
+        strcpy(&tabLine[i], &aLine);
+
+        i++;
+        aLine = strtok(NULL, ";");
+    }
+
+    for(j = 0; j<i; j++) {
+        k = 0;
+        aLine = tabLine[j];
+
+        eClass = strtok(aLine, ",");
+        ePseudo = strtok(NULL, ",");
+        eScore = strtok(NULL, ",");
+
+        nbClassement = atoi(eClass);
+        score = atoi(eScore);
+
+        cellule* nouvelleCellule = malloc(sizeof(cellule));
+        nouvelleCellule->nxt = NULL;
+        nouvelleCellule->score = score;
+
+        while(ePseudo[k] != '\0'){
+            nouvelleCellule->pseudo[k] = ePseudo[k];
+            k++;
+        }
+
+        // on ajoute le caractère de fin de chaine pour l'avoir lors de la sauvegarde
+        nouvelleCellule->pseudo[k] = '\0';
+
+        classement = ajoutClassement(classement, nouvelleCellule);
+    }
+
+    return classement;
 }
 
 
